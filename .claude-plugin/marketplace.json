@@ -1,0 +1,23 @@
+{
+  "name": "princespaghetti-marketplace",
+  "owner": {
+    "name": "Anthony Barbieri"
+  },
+  "metadata": {
+    "description": "A collection of developer productivity plugins for Claude Code",
+    "version": "1.0.0",
+    "repository": "https://github.com/princespaghetti/claude-marketplace"
+  },
+  "plugins": [
+    {
+      "name": "learnfrompast",
+      "source": "./learnfrompast",
+      "description": "Analyzes your shell command history to identify usage patterns, productivity improvements, automation opportunities, and skill development areas based on your actual shell workflows",
+      "version": "1.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/princespaghetti/claude-marketplace",
+      "keywords": ["shell", "history", "productivity", "analysis", "zsh", "bash", "automation"],
+      "category": "productivity"
+    }
+  ]
+}

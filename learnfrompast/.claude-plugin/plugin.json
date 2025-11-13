@@ -1,0 +1,13 @@
+{
+  "name": "learnfrompast",
+  "description": "Analyzes your shell command history to identify usage patterns, productivity improvements, automation opportunities, and skill development areas based on your actual shell workflows",
+  "version": "1.0.0",
+  "author": {
+    "name": "Anthony Barbieri"
+  },
+  "homepage": "https://github.com/princespaghetti/claude-marketplace",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/princespaghetti/claude-marketplace.git"
+  }
+}
