@@ -22,11 +22,19 @@ Then install this plugin:
 
 ## Usage
 
-Once installed, use the `/review_history` command to analyze your shell command history:
+Once installed, use the command to analyze your shell command history:
 
 ```bash
 /review_history
 ```
+
+**Note on command invocation**: If there are no naming conflicts with other plugins or built-in commands, you can use the short form `/review_history`. However, if Claude Code detects a namespace collision, you may need to use the fully-qualified form:
+
+```bash
+/learnfrompast:review_history
+```
+
+The namespaced format (`plugin-name:command-name`) will always work regardless of conflicts.
 
 ## What It Analyzes
 
