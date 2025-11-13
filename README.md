@@ -30,23 +30,17 @@ Or browse and install interactively:
 
 ### learnfrompast
 
-Analyzes your shell command history to identify usage patterns, productivity improvements, automation opportunities, and skill development areas based on your actual shell workflows.
+Analyzes your development workflows to identify productivity improvements and automation opportunities based on your actual shell and git usage patterns.
 
-**Features:**
-- Identifies most frequent commands and patterns
-- Suggests high-impact aliases and automation opportunities
-- Provides actionable productivity improvements
-- Analyzes command patterns by category (git, file operations, development tools, etc.)
-- Generates ready-to-use shell functions and aliases
+**Capabilities:**
+- **Shell History Analysis** (`/review_history` command): Analyzes zsh/bash history for command patterns, suggests aliases and automation opportunities
+- **Git Workflow Patterns** (autonomous skill): Identifies git habits, analyzes commit/branch/collaboration patterns, and suggests workflow improvements
 
-**Usage:**
+**[Full documentation →](learnfrompast/README.md)**
+
+**Quick install:**
 ```bash
-/review_history
-```
-
-Or use the namespaced form (always works, even with naming conflicts):
-```bash
-/learnfrompast:review_history
+/plugin install learnfrompast@princespaghetti-marketplace
 ```
 
 ## Contributing

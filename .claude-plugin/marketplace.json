@@ -12,11 +12,11 @@
     {
       "name": "learnfrompast",
       "source": "./learnfrompast",
-      "description": "Analyzes your shell command history to identify usage patterns, productivity improvements, automation opportunities, and skill development areas based on your actual shell workflows",
-      "version": "1.0.0",
+      "description": "Analyzes your shell command history and git workflows to identify usage patterns, productivity improvements, automation opportunities, and skill development areas based on your actual development workflows",
+      "version": "1.1.0",
       "license": "MIT",
       "repository": "https://github.com/princespaghetti/claude-marketplace",
-      "keywords": ["shell", "history", "productivity", "analysis", "zsh", "bash", "automation"],
+      "keywords": ["shell", "history", "productivity", "analysis", "zsh", "bash", "automation", "git", "workflow", "version-control"],
       "category": "productivity"
     }
   ]
