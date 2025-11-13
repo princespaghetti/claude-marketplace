@@ -6,8 +6,5 @@
     "name": "Anthony Barbieri"
   },
   "homepage": "https://github.com/princespaghetti/claude-marketplace",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/princespaghetti/claude-marketplace.git"
-  }
+  "repository": "https://github.com/princespaghetti/claude-marketplace"
 }
