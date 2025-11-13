@@ -44,6 +44,11 @@ Analyzes your shell command history to identify usage patterns, productivity imp
 /review_history
 ```
 
+Or use the namespaced form (always works, even with naming conflicts):
+```bash
+/learnfrompast:review_history
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues or pull requests.
