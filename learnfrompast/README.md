@@ -1,10 +1,10 @@
 # learnfrompast
 
-Analyzes your shell command history and git workflows to identify usage patterns, productivity improvements, automation opportunities, and skill development areas based on your actual development workflows.
+Analyzes your shell command history, git workflows, and Claude usage patterns to identify productivity improvements, automation opportunities, and suggest custom commands based on your actual development workflows.
 
 ## Overview
 
-This Claude Code plugin provides personalized insights into your development habits by analyzing your zsh/bash history and git workflows to reveal patterns, inefficiencies, and opportunities for improvement.
+This Claude Code plugin provides personalized insights into your development habits by analyzing your zsh/bash history, git workflows, and Claude Code usage patterns to reveal patterns, inefficiencies, and opportunities for automation.
 
 ## Installation
 
@@ -38,6 +38,18 @@ Explicitly analyze your shell command history using the command:
 
 The namespaced format (`plugin-name:command-name`) will always work regardless of conflicts.
 
+### Claude Workflow Analysis (Skill)
+
+The **workflow-analyzer** skill helps you discover repeated workflows and automation opportunities. Simply ask Claude:
+
+```
+"Analyze my workflows"
+"What workflows am I repeating in Claude Code?"
+"Analyze my workflows from the last 60 days"
+```
+
+The skill activates automatically when you ask about workflow analysis. It identifies repeated multi-step workflows (like "add → commit → push") and suggests custom slash commands to automate them. Provides time savings estimates and implementation priorities. All analysis is local—no external data transmission.
+
 ### Git Workflow Analysis (Skill)
 
 The plugin also includes a **git-workflow-patterns** skill that activates automatically when you:
@@ -49,6 +61,17 @@ The plugin also includes a **git-workflow-patterns** skill that activates automa
 The skill analyzes your git history and provides personalized recommendations based on your actual patterns. No explicit command needed—Claude activates it contextually when relevant.
 
 ## What It Analyzes
+
+### Claude Workflow Patterns (via `workflow-analyzer` skill)
+
+Detects repeated workflows in your session history by analyzing patterns like:
+- Git workflows (add/commit/push sequences, branch operations)
+- File operations (consistent read/edit/write patterns)
+- Project workflows (phase-based development, feature patterns)
+- Development cycles (build → test → fix → commit)
+- Plugin/tool workflows (installation, configuration, updates)
+
+Provides actionable automation suggestions with time savings estimates based on frequency and complexity. Requires 3+ occurrences for high-confidence suggestions.
 
 ### Shell Command Patterns (via `/review_history` command)
 - Top 10-15 most frequent commands with usage counts
@@ -108,16 +131,28 @@ The skill analyzes your git history to identify:
 
 ## Features
 
-- **Dual analysis**: Shell command history (command) + Git workflow patterns (skill)
-- **Autonomous activation**: Git skill activates contextually when relevant
-- **Explicit control**: Shell analysis via explicit `/review_history` command
+- **Triple analysis**: Shell command history + Git workflow patterns + Claude usage patterns
+- **Workflow automation**: Detects repeated workflows and suggests custom slash commands
+- **Natural pattern detection**: Uses Claude's reasoning to identify patterns even when worded differently
+- **Hybrid invocation**: Git skill auto-activates contextually; workflow and shell analysis invoked on-demand
 - **Concrete recommendations**: Actionable, specific suggestions with working code
 - **Impact prioritization**: Suggestions ranked by frequency × time saved
 - **Privacy-conscious**: Local analysis, no external data transmission
-- **Copy-pasteable solutions**: Ready-to-use aliases, configs, and scripts
+- **Copy-pasteable solutions**: Ready-to-use aliases, configs, and command suggestions
+- **Time savings estimates**: Shows potential monthly savings based on your usage
 - **Encouraging feedback**: Highlights strengths while suggesting improvements
 
 ## Example Scenarios
+
+### Claude Workflow Analysis
+
+Ask Claude to "analyze my workflows" to discover repeated patterns:
+
+- **Git workflow** (12 occurrences): "add → commit → push" → suggests `/ship-git` command (saves ~25 min/month)
+- **Phase development** (8 occurrences): "review PLAN.md → implement → commit" → suggests `/do-phase` command
+- **Documentation sync** (8 occurrences): "update README → check consistency" → suggests `/sync-docs` command
+
+The skill provides a comprehensive report with specific recommendations ranked by time savings and ROI.
 
 ### Shell History Analysis
 Run `/review_history` to:

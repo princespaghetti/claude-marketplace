@@ -1,10 +1,17 @@
 {
   "name": "learnfrompast",
-  "description": "Analyzes your shell command history and git workflows to identify usage patterns, productivity improvements, automation opportunities, and skill development areas based on your actual development workflows",
-  "version": "1.1.0",
+  "description": "Analyzes your shell command history, git workflows, and Claude usage patterns to identify productivity improvements, automation opportunities, and suggest custom commands based on your actual development workflows",
+  "version": "1.2.0",
   "author": {
     "name": "Anthony Barbieri"
   },
   "homepage": "https://github.com/princespaghetti/claude-marketplace",
-  "repository": "https://github.com/princespaghetti/claude-marketplace"
+  "repository": "https://github.com/princespaghetti/claude-marketplace",
+  "commands": [
+    "review_history"
+  ],
+  "skills": [
+    "git-workflow-patterns",
+    "workflow-analyzer"
+  ]
 }
