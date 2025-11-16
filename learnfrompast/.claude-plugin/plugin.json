@@ -6,12 +6,5 @@
     "name": "Anthony Barbieri"
   },
   "homepage": "https://github.com/princespaghetti/claude-marketplace",
-  "repository": "https://github.com/princespaghetti/claude-marketplace",
-  "commands": [
-    "review_history"
-  ],
-  "skills": [
-    "git-workflow-patterns",
-    "workflow-analyzer"
-  ]
+  "repository": "https://github.com/princespaghetti/claude-marketplace"
 }
