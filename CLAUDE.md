@@ -53,12 +53,11 @@ When adding a new plugin to this marketplace:
 
 ## Testing Plugins
 
-To test plugins locally before publishing:
+To test plugin.json and marketplace.json files locally before publishing:
 ```bash
-claude-code marketplace add /path/to/claude-marketplace
-claude-code plugin install learnfrompast@princespaghetti-marketplace
+claude plugin validate .
 ```
-
+This would be run at the level of the file
 ## Publishing Updates
 
 This marketplace is published via GitHub at: https://github.com/princespaghetti/claude-marketplace
