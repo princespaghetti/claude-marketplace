@@ -2,11 +2,16 @@
 
 This document describes how to run the test suite for the workflow analyzer script.
 
+## Location
+
+Tests are located in `/tests/workflow-analyzer/` at the repository root, outside of the plugin installation directory.
+
 ## Setup
 
-Install test dependencies:
+Install test dependencies from the tests directory:
 
 ```bash
+cd tests/workflow-analyzer
 pip install -r requirements-test.txt
 ```
 

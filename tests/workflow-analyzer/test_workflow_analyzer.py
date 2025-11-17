@@ -8,9 +8,12 @@ import json
 import pytest
 import tempfile
 from pathlib import Path
-from workflow_analyzer import analyze_sessions, generate_report, main
 import sys
 from io import StringIO
+
+# Add the workflow analyzer script directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / 'learnfrompast' / 'skills' / 'workflow-analyzer' / 'scripts'))
+from workflow_analyzer import analyze_sessions, generate_report, main
 
 
 # Test Fixtures
