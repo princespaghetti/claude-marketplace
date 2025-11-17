@@ -6,11 +6,6 @@ on:
       - 'learnfrompast/skills/workflow-analyzer/scripts/workflow_analyzer.py'
       - 'tests/workflow-analyzer/**'
       - '.github/workflows/test-workflow-analyzer.yml'
-  pull_request:
-    paths:
-      - 'learnfrompast/skills/workflow-analyzer/scripts/workflow_analyzer.py'
-      - 'tests/workflow-analyzer/**'
-      - '.github/workflows/test-workflow-analyzer.yml'
 
 jobs:
   test:
