@@ -46,6 +46,9 @@ ehthumbs.db
 # Test coverage
 coverage/
 .nyc_output/
+.coverage
+htmlcov/
+.pytest_cache/
 
 # Distribution
 dist/
