@@ -84,22 +84,14 @@ gh api repos/{owner}/{repo}/commits --jq '.[0].commit.author.date'
 
 **Commands to run:**
 ```bash
-# Node.js - audit for vulnerabilities
+# Node.js - built-in audit
 npm audit --json
-npx auditjs ossi  # Alternative auditor
-
-# Python - security audit
-pip-audit
-safety check
-
-# Rust - security audit
-cargo audit
-
-# Go - vulnerability check
-govulncheck ./...
 
 # GitHub API - check security advisories
 gh api repos/{owner}/{repo}/security-advisories --jq '.[].summary'
+
+# Check for CVEs via GitHub Advisory Database
+gh api graphql -f query='{ securityVulnerabilities(first: 5, package: "<package>") { nodes { advisory { summary severity } } } }'
 ```
 
 **How to investigate:**
@@ -190,14 +182,16 @@ npm ls --all <package>
 npm pack <package> --dry-run  # Check package size
 
 # Python
-pip show <package>
-pipdeptree -p <package>
+pip show <package>  # Shows direct dependencies in Requires field
 
 # Rust
 cargo tree -p <package>
 
 # Go
 go mod graph | grep <package>
+
+# Java
+mvn dependency:tree
 ```
 
 **Red flags:**
@@ -247,26 +241,20 @@ go mod graph | grep <package>
 
 **Commands to run:**
 ```bash
-# Node.js - comprehensive license check
-npx license-checker --production --summary
-npx license-checker --production --onlyAllow "MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC"
-
-# Python - license audit
-pip-licenses --format=markdown
-pip-licenses --fail-on="GPL;AGPL"
-
-# Rust - license check
-cargo license
-cargo deny check licenses
-
-# Go - license check
-go-licenses check ./...
-
 # GitHub API - get license info
 gh api repos/{owner}/{repo}/license --jq '.license.spdx_id'
 
-# Check full dependency tree licenses
+# Check full dependency tree licenses via GitHub SBOM
 gh api repos/{owner}/{repo}/dependency-graph/sbom --jq '.sbom.packages[].licenseConcluded'
+
+# Node.js - check package.json license field
+npm view <package> license
+
+# Python - check PyPI metadata
+pip show <package>  # Shows License field
+
+# Rust - check Cargo.toml
+cargo metadata --format-version 1 | jq '.packages[] | {name, license}'
 ```
 
 **Red flags:**
@@ -456,10 +444,10 @@ Different language ecosystems have different norms and risks:
 - **Philosophy**: Stdlib-first, fewer dependencies is idiomatic
 - **Prefer**: Standard library solutions when available
 - **Watch for**: Packages that wrap stdlib with minimal added value
-- **Strength**: Strong tooling (`go mod`, `govulncheck`) makes dependency management safer
+- **Strength**: Strong tooling (`go mod`, `go mod graph`) makes dependency management safer
 
 ### Rust / Cargo
-- **Strength**: Cargo's tooling (audit, deny, tree) provides excellent visibility
+- **Strength**: Cargo's built-in tooling (`cargo tree`, `cargo metadata`) provides excellent visibility
 - **Prefer**: Crates with `#![forbid(unsafe_code)]` for non-performance-critical code
 - **Watch for**: Crates pulling in many proc-macro dependencies (slow compile times)
 - **Culture**: Strong emphasis on correctness, good documentation norms
@@ -468,7 +456,7 @@ Different language ecosystems have different norms and risks:
 - **Risk**: PyPI has had notable supply chain attacks (typosquatting)
 - **Prefer**: Packages from known maintainers, check for signed releases
 - **Watch for**: Packages with names similar to popular packages
-- **Tool**: Use `pip-audit` and `safety` for vulnerability scanning
+- **Tool**: Use `pip show` and check GitHub for vulnerability history
 
 ### Ruby / RubyGems
 - **Culture**: Convention over configuration, gems often do a lot
