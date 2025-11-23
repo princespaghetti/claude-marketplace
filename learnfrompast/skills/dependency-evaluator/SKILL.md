@@ -43,10 +43,22 @@ When evaluating a dependency, analyze these key signals:
 
 **Commands to run:**
 ```bash
-# For npm packages
+# Node.js - check publish dates and versions
 npm view <package> time
+npm view <package> versions --json
 
-# Check GitHub activity via web search
+# Python - check package info
+pip index versions <package>
+
+# Rust - check crate info
+cargo search <package> --limit 1
+
+# Go - check module info
+go list -m -versions <module>
+
+# GitHub API - get repository activity (requires gh CLI)
+gh api repos/{owner}/{repo} --jq '.pushed_at, .open_issues_count'
+gh api repos/{owner}/{repo}/commits --jq '.[0].commit.author.date'
 ```
 
 **Red flags:**
@@ -70,11 +82,31 @@ npm view <package> time
 - Response time to past CVEs
 - Automated security scanning (Dependabot, Snyk badges)
 
+**Commands to run:**
+```bash
+# Node.js - audit for vulnerabilities
+npm audit --json
+npx auditjs ossi  # Alternative auditor
+
+# Python - security audit
+pip-audit
+safety check
+
+# Rust - security audit
+cargo audit
+
+# Go - vulnerability check
+govulncheck ./...
+
+# GitHub API - check security advisories
+gh api repos/{owner}/{repo}/security-advisories --jq '.[].summary'
+```
+
 **How to investigate:**
 - Search for CVE history: `"<package-name>" CVE`
-- Check npm audit / pip-audit / cargo audit reports
-- Look for security badges in README
+- Look for security badges in README (Snyk, Dependabot)
 - Review GitHub Security tab
+- Check OSV database: https://osv.dev
 
 **Red flags:**
 - No security policy
@@ -97,9 +129,18 @@ npm view <package> time
 - Community forum engagement
 - Bus factor
 
-**How to investigate:**
+**Commands to run:**
 ```bash
-# Check contributor count via GitHub API or web
+# GitHub API - community health metrics
+gh api repos/{owner}/{repo}/community/profile --jq '{health_percentage, files}'
+
+# Get contributor stats
+gh api repos/{owner}/{repo}/contributors --jq 'length'
+gh api repos/{owner}/{repo}/stats/contributors --jq '.[].author.login'
+
+# Check issue/PR response times
+gh api repos/{owner}/{repo}/issues --jq '[.[] | select(.pull_request == null)] | .[0:5] | .[].created_at'
+gh api repos/{owner}/{repo}/pulls --jq '.[0:5] | .[].created_at'
 ```
 
 **Red flags:**
@@ -206,13 +247,26 @@ go mod graph | grep <package>
 
 **Commands to run:**
 ```bash
-# Node.js
+# Node.js - comprehensive license check
 npx license-checker --production --summary
+npx license-checker --production --onlyAllow "MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC"
 
-# Python
-pip-licenses
+# Python - license audit
+pip-licenses --format=markdown
+pip-licenses --fail-on="GPL;AGPL"
 
-# Check package.json or pyproject.toml for license field
+# Rust - license check
+cargo license
+cargo deny check licenses
+
+# Go - license check
+go-licenses check ./...
+
+# GitHub API - get license info
+gh api repos/{owner}/{repo}/license --jq '.license.spdx_id'
+
+# Check full dependency tree licenses
+gh api repos/{owner}/{repo}/dependency-graph/sbom --jq '.sbom.packages[].licenseConcluded'
 ```
 
 **Red flags:**
@@ -304,23 +358,28 @@ Structure your evaluation report as:
 
 **Recommendation**: [ADOPT / EVALUATE FURTHER / AVOID]
 **Risk Level**: [Low / Medium / High]
+**Blockers Found**: [Yes/No]
+
+### Blockers (if any)
+[List any dealbreaker issues that should prevent adoption regardless of other scores]
+- ⛔ [Blocker description]
 
 ### Evaluation Scores
 
-| Signal | Score | Notes |
-|--------|-------|-------|
-| Maintenance | X/5 | [brief note] |
-| Security | X/5 | [brief note] |
-| Community | X/5 | [brief note] |
-| Documentation | X/5 | [brief note] |
-| Dependency Footprint | X/5 | [brief note] |
-| Production Adoption | X/5 | [brief note] |
-| License | X/5 | [brief note] |
-| API Stability | X/5 | [brief note] |
-| Funding/Sustainability | X/5 | [brief note] |
-| Ecosystem Momentum | X/5 | [brief note] |
+| Signal | Score | Weight | Notes |
+|--------|-------|--------|-------|
+| Maintenance | X/5 | [H/M/L] | [brief note] |
+| Security | X/5 | [H/M/L] | [brief note] |
+| Community | X/5 | [H/M/L] | [brief note] |
+| Documentation | X/5 | [H/M/L] | [brief note] |
+| Dependency Footprint | X/5 | [H/M/L] | [brief note] |
+| Production Adoption | X/5 | [H/M/L] | [brief note] |
+| License | X/5 | [H/M/L] | [brief note] |
+| API Stability | X/5 | [H/M/L] | [brief note] |
+| Funding/Sustainability | X/5 | [H/M/L] | [brief note] |
+| Ecosystem Momentum | X/5 | [H/M/L] | [brief note] |
 
-**Overall Score**: X/50
+**Weighted Score**: X/50 (adjusted for dependency criticality)
 
 ### Key Findings
 
@@ -345,6 +404,25 @@ Structure your evaluation report as:
 - Fallback plan
 ```
 
+## Scoring Weights
+
+Adjust signal weights based on dependency type:
+
+| Signal | Critical Dep | Standard Dep | Dev Dep |
+|--------|-------------|--------------|---------|
+| Security | High | Medium | Low |
+| Maintenance | High | Medium | Medium |
+| Funding | High | Low | Low |
+| License | High | High | Medium |
+| API Stability | Medium | Medium | High |
+| Documentation | Medium | Medium | Medium |
+| Community | Medium | Medium | Low |
+| Dependency Footprint | Medium | Low | Low |
+| Production Adoption | Medium | Medium | Low |
+| Ecosystem Momentum | Low | Medium | Low |
+
+**Blocker Override**: Any blocker issue results in AVOID recommendation regardless of scores.
+
 ## Risk-Adjusted Evaluation
 
 Weight signals based on dependency criticality:
@@ -363,6 +441,104 @@ Weight signals based on dependency criticality:
 - Prioritize: Maintenance, API Stability
 - Lower security concerns (not in production)
 - Focus on developer experience
+
+## Ecosystem-Specific Considerations
+
+Different language ecosystems have different norms and risks:
+
+### Node.js / npm
+- **left-pad risk**: Tiny single-function packages carry disproportionate supply chain risk
+- **Prefer**: Packages with minimal dependencies, or well-established micro-utilities
+- **Watch for**: Packages with hundreds of transitive dependencies for simple tasks
+- **Tool**: Use `npm ls --all` to visualize the full tree before committing
+
+### Go
+- **Philosophy**: Stdlib-first, fewer dependencies is idiomatic
+- **Prefer**: Standard library solutions when available
+- **Watch for**: Packages that wrap stdlib with minimal added value
+- **Strength**: Strong tooling (`go mod`, `govulncheck`) makes dependency management safer
+
+### Rust / Cargo
+- **Strength**: Cargo's tooling (audit, deny, tree) provides excellent visibility
+- **Prefer**: Crates with `#![forbid(unsafe_code)]` for non-performance-critical code
+- **Watch for**: Crates pulling in many proc-macro dependencies (slow compile times)
+- **Culture**: Strong emphasis on correctness, good documentation norms
+
+### Python / PyPI
+- **Risk**: PyPI has had notable supply chain attacks (typosquatting)
+- **Prefer**: Packages from known maintainers, check for signed releases
+- **Watch for**: Packages with names similar to popular packages
+- **Tool**: Use `pip-audit` and `safety` for vulnerability scanning
+
+### Ruby / RubyGems
+- **Culture**: Convention over configuration, gems often do a lot
+- **Watch for**: Gems that monkey-patch core classes extensively
+- **Prefer**: Well-documented gems with clear upgrade paths
+
+### Java / Maven
+- **Strength**: Mature ecosystem with established governance
+- **Watch for**: Dependency hell from version conflicts
+- **Tool**: Use `mvn dependency:tree` to understand the full graph
+
+## Critical Red Flags (Dealbreakers)
+
+These issues should trigger an automatic AVOID recommendation:
+
+### Supply Chain Risks
+- ⛔ **Typosquatting**: Package name suspiciously similar to a popular package
+- ⛔ **Compiled binaries without source**: Binary blobs in repo without build instructions
+- ⛔ **Sudden ownership transfer**: Recent transfer to unknown maintainer
+- ⛔ **Install scripts with network calls**: postinstall scripts that download external code
+
+### Maintainer Behavior
+- ⛔ **Ransom behavior**: Maintainer demanding payment to fix security issues
+- ⛔ **Protest-ware**: Code that performs actions based on political/geographic conditions
+- ⛔ **Intentional sabotage history**: Any history of deliberately breaking the package
+
+### Security Issues
+- ⛔ **Active exploitation**: Known vulnerability being actively exploited in the wild
+- ⛔ **Credentials in source**: API keys, passwords, or secrets in the repository
+- ⛔ **Disabled security features**: Package disables security features without clear reason
+
+### Legal Issues
+- ⛔ **License violation**: Package includes code that violates its stated license
+- ⛔ **No license**: No license file means all rights reserved (legally risky)
+- ⛔ **License change without notice**: Recent sneaky license change to restrictive terms
+
+## When to Reconsider Adding a Dependency
+
+Before adding any dependency, ask these questions:
+
+### Is the dependency actually needed?
+
+**Write it yourself if:**
+- The functionality is < 50 lines of straightforward code
+- You only need a small subset of the package's features
+- The package adds significant weight for minimal functionality
+- Example: Don't add a 500KB package to pad strings or check if a number is odd
+
+**Use the dependency if:**
+- The problem domain is complex (crypto, date/time, parsing)
+- Correctness is critical and well-tested implementations exist
+- The functionality would require significant ongoing maintenance
+- You need the full feature set, not just one function
+
+### Cost-Benefit Analysis
+
+```
+Dependency Cost = (security risk) + (maintenance burden) + (bundle size) + (upgrade friction)
+Dependency Value = (time saved) + (correctness gained) + (features needed) + (community support)
+
+Only add if: Value significantly exceeds Cost
+```
+
+### Alternatives to Full Dependencies
+
+1. **Copy the code**: For small, stable utilities, copy the source (with attribution)
+2. **Polyfills**: Use targeted polyfills instead of full compatibility libraries
+3. **Tree-shaking imports**: Use `import { specific } from 'package'` not `import *`
+4. **Peer dependencies**: Let the consumer provide shared dependencies
+5. **Optional dependencies**: Make heavy dependencies optional for users who need them
 
 ## Example Invocations
 
