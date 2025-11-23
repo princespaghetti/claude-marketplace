@@ -61,17 +61,19 @@ gh api repos/{owner}/{repo} --jq '.pushed_at, .open_issues_count'
 gh api repos/{owner}/{repo}/commits --jq '.[0].commit.author.date'
 ```
 
-**Red flags:**
-- No commits in 12+ months
-- Sporadic bursts followed by long silences
-- Large backlog of unaddressed issues
-- No recent releases despite open issues
+**Red flags (with temporal context):**
+- **Actively developed software**: No commits in 6+ months is concerning
+- **Mature/stable libraries**: No commits in 2+ years AND unaddressed security issues is concerning (inactivity alone is not a red flag for stable libs)
+- Sporadic bursts followed by long silences (inconsistent maintenance)
+- Large backlog of unaddressed issues (20+ open issues with no maintainer response)
+- No releases in 12+ months despite merged PRs or open issues
 
 **Green flags:**
-- Regular commits (even if small)
-- Recent releases within last 6 months
-- Responsive issue triage
+- Regular commits (even if small) for actively developed projects
+- Recent releases within last 6-12 months
+- Responsive issue triage (comments within days/weeks, not months)
 - Active pull request merging
+- For mature libraries: Security issues addressed promptly even if feature development is slow
 
 ### 2. Security Posture
 
@@ -123,17 +125,30 @@ gh api graphql -f query='{ securityVulnerabilities(first: 5, package: "<package>
 
 **Commands to run:**
 ```bash
-# GitHub API - community health metrics
-gh api repos/{owner}/{repo}/community/profile --jq '{health_percentage, files}'
+# GitHub API - community health metrics (returns health_percentage 0-100)
+gh api repos/{owner}/{repo}/community/profile --jq '{health_percentage, description, files}'
 
-# Get contributor stats
+# Check if security policy exists
+gh api repos/{owner}/{repo}/contents/SECURITY.md --jq '.name' 2>/dev/null || echo "No SECURITY.md"
+
+# Get contributor count
 gh api repos/{owner}/{repo}/contributors --jq 'length'
-gh api repos/{owner}/{repo}/stats/contributors --jq '.[].author.login'
 
-# Check issue/PR response times
-gh api repos/{owner}/{repo}/issues --jq '[.[] | select(.pull_request == null)] | .[0:5] | .[].created_at'
-gh api repos/{owner}/{repo}/pulls --jq '.[0:5] | .[].created_at'
+# Get top contributors
+gh api repos/{owner}/{repo}/stats/contributors --jq 'sort_by(.total) | reverse | .[0:5] | .[].author.login'
+
+# Check recent issue activity (are maintainers responding?)
+gh api repos/{owner}/{repo}/issues --jq '[.[] | select(.pull_request == null)] | .[0:5] | .[] | {title, created_at, comments}'
+
+# Check PR merge velocity
+gh api repos/{owner}/{repo}/pulls?state=closed --jq '.[0:10] | .[] | {title, created_at, merged_at}'
 ```
+
+**What to look for:**
+- `health_percentage` > 70 is good; < 50 suggests missing community files
+- Multiple contributors (not just 1-2) indicates healthier bus factor
+- Issues with comments show maintainer engagement; many 0-comment issues is a red flag
+- PRs merged within days/weeks is healthy; months suggests slow maintenance
 
 **Red flags:**
 - Single maintainer with no backup
@@ -194,8 +209,15 @@ go mod graph | grep <package>
 mvn dependency:tree
 ```
 
+**What to look for in dependency trees:**
+- **Total count**: Flag packages with >50 transitive dependencies for simple functionality
+- **Duplicate versions**: Multiple versions of the same package (e.g., `lodash@4.17.21` and `lodash@4.17.15`) indicate potential conflicts
+- **Deep nesting**: Dependencies 5+ levels deep are harder to audit and update
+- **Abandoned dependencies**: Transitive deps that haven't been updated in years
+- **Size vs. function**: A 500KB+ package for a simple utility is a smell
+
 **Red flags:**
-- 50+ transitive dependencies
+- 50+ transitive dependencies for non-complex functionality
 - Dependencies with known vulnerabilities
 - Bloated bundle size for simple functionality
 - Unmaintained transitive dependencies
@@ -334,6 +356,41 @@ cargo metadata --format-version 1 | jq '.packages[] | {name, license}'
 - Aligned with platform direction
 - Active plugin/extension ecosystem
 
+## When to Reconsider Adding a Dependency
+
+Before doing a detailed evaluation, ask whether the dependency is actually needed:
+
+### Is the dependency actually needed?
+
+**Write it yourself if:**
+- The functionality is < 50 lines of straightforward code
+- You only need a small subset of the package's features
+- The package adds significant weight for minimal functionality
+- Example: Don't add a 500KB package to pad strings or check if a number is odd
+
+**Use the dependency if:**
+- The problem domain is complex (crypto, date/time, parsing)
+- Correctness is critical and well-tested implementations exist
+- The functionality would require significant ongoing maintenance
+- You need the full feature set, not just one function
+
+### Cost-Benefit Analysis
+
+```
+Dependency Cost = (security risk) + (maintenance burden) + (bundle size) + (upgrade friction)
+Dependency Value = (time saved) + (correctness gained) + (features needed) + (community support)
+
+Only add if: Value significantly exceeds Cost
+```
+
+### Alternatives to Full Dependencies
+
+1. **Copy the code**: For small, stable utilities, copy the source (with attribution)
+2. **Polyfills**: Use targeted polyfills instead of full compatibility libraries
+3. **Tree-shaking imports**: Use `import { specific } from 'package'` not `import *`
+4. **Peer dependencies**: Let the consumer provide shared dependencies
+5. **Optional dependencies**: Make heavy dependencies optional for users who need them
+
 ## Output Format
 
 Structure your evaluation report as:
@@ -410,6 +467,14 @@ Adjust signal weights based on dependency type:
 | Ecosystem Momentum | Low | Medium | Low |
 
 **Blocker Override**: Any blocker issue results in AVOID recommendation regardless of scores.
+
+**Score Thresholds**:
+- Security or Maintenance score ≤ 2: Strongly reconsider regardless of other scores
+- Any High-weight signal ≤ 2: Flag as significant concern in report
+- Overall weighted score < 25: Default to EVALUATE FURTHER or AVOID
+- Overall weighted score ≥ 35: Generally safe to ADOPT (if no blockers)
+
+**Weighting Priority**: Security and Maintenance typically matter more than Documentation or Ecosystem Momentum. A well-documented but unmaintained package is riskier than a poorly-documented but actively maintained one.
 
 ## Risk-Adjusted Evaluation
 
@@ -493,40 +558,19 @@ These issues should trigger an automatic AVOID recommendation:
 - ⛔ **No license**: No license file means all rights reserved (legally risky)
 - ⛔ **License change without notice**: Recent sneaky license change to restrictive terms
 
-## When to Reconsider Adding a Dependency
+### False Positives to Consider
 
-Before adding any dependency, ask these questions:
+Some legitimate projects have characteristics that look like red flags:
 
-### Is the dependency actually needed?
+- **Compiled binaries**: Cryptography libraries, native modules, and performance-critical code may legitimately include pre-built binaries. Check if build instructions and source are available, and if the project has established trust (e.g., OpenSSL, libsodium wrappers).
 
-**Write it yourself if:**
-- The functionality is < 50 lines of straightforward code
-- You only need a small subset of the package's features
-- The package adds significant weight for minimal functionality
-- Example: Don't add a 500KB package to pad strings or check if a number is odd
+- **Archived/inactive repos**: Mature, stable libraries may have little recent activity because they're "done." A date library or math utility that hasn't changed in 2 years might be complete, not abandoned. Check: Are issues being triaged? Is the API stable? Are security issues addressed?
 
-**Use the dependency if:**
-- The problem domain is complex (crypto, date/time, parsing)
-- Correctness is critical and well-tested implementations exist
-- The functionality would require significant ongoing maintenance
-- You need the full feature set, not just one function
+- **Single maintainer**: Many excellent packages have one dedicated maintainer. This is higher risk but not automatically disqualifying. Check: Is there organizational backing? Are there other contributors who could step up? Is the codebase simple enough to fork?
 
-### Cost-Benefit Analysis
+- **Low download counts**: New packages or niche tools may have low downloads but be high quality. Evaluate the code and maintainer reputation directly rather than relying solely on popularity.
 
-```
-Dependency Cost = (security risk) + (maintenance burden) + (bundle size) + (upgrade friction)
-Dependency Value = (time saved) + (correctness gained) + (features needed) + (community support)
-
-Only add if: Value significantly exceeds Cost
-```
-
-### Alternatives to Full Dependencies
-
-1. **Copy the code**: For small, stable utilities, copy the source (with attribution)
-2. **Polyfills**: Use targeted polyfills instead of full compatibility libraries
-3. **Tree-shaking imports**: Use `import { specific } from 'package'` not `import *`
-4. **Peer dependencies**: Let the consumer provide shared dependencies
-5. **Optional dependencies**: Make heavy dependencies optional for users who need them
+**When in doubt**: Look at how the project handles security issues and breaking changes. Responsive handling of CVEs and clear communication about breaking changes are strong positive signals regardless of other factors.
 
 ## Example Invocations
 
