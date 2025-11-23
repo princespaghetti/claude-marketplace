@@ -397,7 +397,6 @@ Weight signals based on dependency criticality:
 
 ## Privacy and Security
 
-- Don't recommend packages with known unpatched vulnerabilities
 - Verify license compatibility before recommending
 - Consider supply chain risks for sensitive applications
 - Note when packages require additional security review
