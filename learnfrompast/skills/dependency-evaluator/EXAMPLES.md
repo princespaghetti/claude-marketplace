@@ -1,11 +1,21 @@
 # Dependency Evaluation Examples
 
-This file contains real-world evaluation examples demonstrating how to apply the evaluation framework to different types of packages. Use these as templates for your own evaluations.
+## Important Note
 
-## Example 1: lodash (Well-Maintained, Widely Adopted)
+**These are hypothetical examples for demonstration purposes only.** They show how to structure evaluation reports, not actual package recommendations.
+
+For real evaluations:
+- Run actual commands to gather current data
+- Cite specific versions, dates, and metrics
+- Verify information is current before making decisions
+- Don't rely on these examples as factual assessments
+
+---
+
+## Example 1: well-maintained-lib (High Quality, Widely Adopted)
 
 ### Summary
-lodash is a modern JavaScript utility library delivering modularity, performance, and extras. It's one of the most widely-used npm packages with proven production reliability.
+well-maintained-lib is a hypothetical utility library with excellent maintenance practices, strong community support, and proven production reliability. This example demonstrates evaluating a high-quality, low-risk dependency.
 
 **Recommendation**: ADOPT
 **Risk Level**: Low
@@ -15,118 +25,129 @@ lodash is a modern JavaScript utility library delivering modularity, performance
 
 | Signal | Score | Weight | Notes |
 |--------|-------|--------|-------|
-| Maintenance | 5/5 | H | Regular releases, last update < 1 month ago |
-| Security | 5/5 | H | Quick CVE response, active security scanning |
-| Community | 5/5 | H | 50+ contributors, responsive maintainers |
-| Documentation | 5/5 | M | Excellent docs site with all methods documented |
-| Dependency Footprint | 5/5 | L | Zero dependencies, modular imports supported |
-| Production Adoption | 5/5 | M | 150K+ dependents, used by major companies |
-| License | 5/5 | H | MIT license, very permissive |
-| API Stability | 5/5 | M | Stable API at v4.x, semver compliant |
-| Funding/Sustainability | 4/5 | M | OpenCollective, multiple sponsors |
-| Ecosystem Momentum | 4/5 | L | Mature but some moving to native alternatives |
+| Maintenance | 5/5 | H | Regular releases every 2-3 months, last release 3 weeks ago (v4.2.1) |
+| Security | 5/5 | H | Security policy documented, 2 CVEs in history both patched within 48 hours |
+| Community | 5/5 | H | 45 active contributors, PRs merged within 3-7 days |
+| Documentation | 5/5 | M | Comprehensive docs site, API reference, migration guides for each major version |
+| Dependency Footprint | 5/5 | L | Zero dependencies, 45KB minified+gzipped |
+| Production Adoption | 5/5 | M | 180K+ dependents on npm, used by Fortune 500 companies |
+| License | 5/5 | H | MIT license, no transitive license issues |
+| API Stability | 5/5 | M | Strict semver since v1.0, currently at v4.2.1, clear deprecation policy |
+| Funding/Sustainability | 4/5 | M | OpenCollective with $15K/year, 3 full-time maintainers employed by sponsoring companies |
+| Ecosystem Momentum | 4/5 | L | Mature ecosystem, some functionality now available in language built-ins |
 
-**Weighted Score**: 48/50
+**Weighted Score**: 47/50
 
 ### Key Findings
 
 #### Strengths
-- Zero dependencies eliminates transitive dependency risks
-- Extensively battle-tested in production (millions of projects)
-- Modular design allows importing only needed functions
-- Comprehensive test coverage and documentation
-- Consistent API with clear deprecation cycles
+- Zero-dependency architecture eliminates supply chain risks
+- Proven at scale with millions of daily downloads
+- Strong security track record with quick CVE response times
+- Active, diverse contributor base reduces bus factor
+- Excellent documentation reduces onboarding friction
 
 #### Concerns
-- Some functions now duplicated by ES6+ native methods
-- Bundle size can be large if importing entire library
-- Ecosystem slowly moving toward native alternatives for simple cases
+- Some functionality overlaps with modern language built-ins (though library still adds value)
+- Bundle size acceptable but not minimal (45KB could be 20KB if refactored)
+- Funding is adequate but not exceptional for project scale
 
 ### Alternatives Considered
-- **Native ES6+ methods**: For simple array/object operations
-- **lodash-es**: ES modules version for better tree-shaking
-- **ramda**: For functional programming approach
+- **native-features**: For simple use cases, language built-ins may suffice
+- **lightweight-alternative**: Smaller bundle (15KB) but less comprehensive API
+- **competing-lib**: Similar features but less mature (only v2.0)
 
 ### Recommendation Details
-lodash remains an excellent choice for projects needing comprehensive utility functions. The package is mature, well-maintained, and has proven reliability. The zero-dependency footprint and modular structure make it low-risk even for large applications.
+well-maintained-lib represents a textbook example of a high-quality dependency. Strong maintenance, security practices, community health, and production adoption make it low-risk. The zero-dependency footprint and permissive license eliminate common concerns.
 
 ### If You Proceed
-- **Version strategy**: Pin to specific v4.x version, update quarterly
-- **Import strategy**: Use modular imports (`import map from 'lodash/map'`) for better tree-shaking
-- **Monitoring**: Watch for security advisories (rare but quick to patch)
-- **Consider**: Evaluate each usage - simple operations might not need lodash
+- **Version strategy**: Pin to v4.x, review release notes for each minor update
+- **Import strategy**: Use tree-shakeable imports where available to minimize bundle size
+- **Monitoring**: Subscribe to GitHub releases and security advisories
+- **Performance**: Profile bundle size impact; consider code-splitting for large imports
+- **Consider alternatives**: Evaluate if newer language features can replace simpler use cases
 
 ---
 
-## Example 2: left-pad Incident (Cautionary Tale)
+## Example 2: tiny-util (Micro-Package with Supply Chain Risk)
 
 ### Summary
-The left-pad package (before 2016 removal) was an 11-line function for padding strings. The package's removal from npm broke thousands of builds, exposing dependency chain fragility.
+tiny-util is a hypothetical single-purpose utility package providing 15 lines of functionality. While technically sound, it represents disproportionate supply chain risk for minimal value.
 
 **Recommendation**: AVOID - Write yourself
-**Risk Level**: High (disproportionate risk for simple functionality)
+**Risk Level**: High (disproportionate risk-to-value ratio)
 **Blockers Found**: Yes
 
 ### Blockers
-- ⛔ Extreme functionality-to-risk ratio: 11 lines of code creates supply chain vulnerability
-- ⛔ Simple functionality easily implemented in-house with no dependencies
+- ⛔ Extreme risk-to-value ratio: 15 lines of simple code creates unnecessary supply chain dependency
+- ⛔ Functionality trivially reproducible with language built-ins or 5 minutes of coding
 
 ### Evaluation Scores
 
 | Signal | Score | Weight | Notes |
 |--------|-------|--------|-------|
-| Maintenance | 3/5 | H | Was maintained, but single maintainer |
-| Security | 4/5 | H | No inherent security issues in code |
-| Community | 2/5 | H | Single maintainer, no backup |
-| Documentation | 3/5 | M | Function was self-explanatory |
-| Dependency Footprint | 5/5 | M | Zero dependencies |
-| Production Adoption | 4/5 | M | Widely used (thousands of dependents) |
+| Maintenance | 3/5 | H | Single maintainer, sporadic updates (last release 4 months ago) |
+| Security | 4/5 | H | No inherent vulnerabilities, but package could be compromised |
+| Community | 2/5 | H | Solo developer, no backup maintainers, 0 recent PR activity |
+| Documentation | 3/5 | M | README explains usage clearly, but minimal examples |
+| Dependency Footprint | 5/5 | M | Zero dependencies, 1.2KB total |
+| Production Adoption | 4/5 | M | 50K+ dependents (high for such simple functionality) |
 | License | 5/5 | H | MIT license |
-| API Stability | 5/5 | M | Simple, stable API |
-| Funding/Sustainability | 1/5 | H | Unfunded, single volunteer |
-| Ecosystem Momentum | 2/5 | L | Highlighted supply chain risks |
+| API Stability | 5/5 | M | Stable v1.x API, unchanged for 2 years |
+| Funding/Sustainability | 1/5 | H | No funding, volunteer-maintained |
+| Ecosystem Momentum | 3/5 | L | Usage remains stable but no growth |
 
-**Weighted Score**: 30/50 (but AVOID due to blocker)
+**Weighted Score**: 28/50 (but AVOID due to blocker)
 
 ### Key Findings
 
 #### Strengths
 - Simple, focused functionality
-- Zero dependencies
-- Wide adoption indicated trust (before incident)
+- No dependencies reduces some risks
+- Permissive license
+- Proven stability (API unchanged)
 
 #### Concerns
-- **Critical**: 11 lines of code creating major supply chain dependency
-- Single point of failure (one person could remove it)
-- Functionality trivially reproducible
-- Risk greatly outweighs benefit
+- **Critical**: 15 lines of code creates major supply chain dependency
+- Single point of failure (one maintainer with npm publish rights)
+- Functionality easily implementable in-house
+- Risk massively outweighs benefit
+- Package could be removed, compromised, or abandoned
 
-### Alternatives
+### Alternative Solution
 ```javascript
-// Write it yourself (< 5 minutes):
-function leftPad(str, len, char = ' ') {
-  return String(char).repeat(Math.max(0, len - str.length)) + str;
+// Implement yourself (5 minutes):
+function utilityFunction(input, options = {}) {
+  // 10-15 lines of straightforward logic
+  // Full control, no external dependency
+  // Can be customized to exact needs
+  return result;
 }
 
-// Or use native padStart (ES2017+):
-str.padStart(len, char);
+// Or use language built-ins:
+// Modern languages often have this functionality natively
 ```
 
 ### Recommendation Details
-This is a textbook example of when NOT to add a dependency. The left-pad incident (2016) demonstrated that even small, seemingly benign packages can create significant risk. For such simple functionality, in-house implementation or native methods are far safer.
+This exemplifies when NOT to add a dependency. The infamous left-pad incident (2016) demonstrated that tiny packages can create massive ecosystem disruption. For such simple functionality, in-house implementation is vastly safer and provides full control.
+
+### Cost-Benefit Analysis
+- **Dependency cost**: Supply chain risk, package management overhead, potential for removal/compromise
+- **Dependency value**: Saves 5 minutes of implementation time
+- **Verdict**: Cost >>> Value
 
 ### Lessons Learned
-- Evaluate cost-benefit: Simple utilities often aren't worth the dependency
-- Consider supply chain risk even for "safe" packages
-- Bus factor matters even when code is simple
-- Native language features often replace simple utilities
+- Simple utilities often aren't worth the dependency risk
+- Consider bus factor even for "safe" code
+- Maintain control over critical functionality
+- Language built-ins often replace simple utilities
 
 ---
 
-## Example 3: date-fns (Niche but High Quality)
+## Example 3: modern-alternative (Quality Library, Lower Popularity)
 
 ### Summary
-date-fns is a modern JavaScript date utility library with immutable functions and tree-shaking support. Despite lower download counts than moment.js, it represents superior modern design.
+modern-alternative is a hypothetical well-designed library that solves a problem better than established alternatives, but has lower download counts due to being newer. This demonstrates not penalizing quality for popularity.
 
 **Recommendation**: ADOPT
 **Risk Level**: Low
@@ -136,126 +157,144 @@ date-fns is a modern JavaScript date utility library with immutable functions an
 
 | Signal | Score | Weight | Notes |
 |--------|-------|--------|-------|
-| Maintenance | 5/5 | H | Active development, regular releases |
-| Security | 5/5 | H | No CVEs, security-conscious design |
-| Community | 4/5 | H | 20+ contributors, responsive core team |
-| Documentation | 5/5 | M | Excellent docs with all functions explained |
-| Dependency Footprint | 5/5 | M | Zero dependencies, tree-shakeable |
-| Production Adoption | 4/5 | M | Growing adoption, 30K+ dependents |
+| Maintenance | 5/5 | H | Active development, releases every 3-4 weeks, responsive maintainers |
+| Security | 5/5 | H | Zero CVEs, security-conscious architecture, Dependabot enabled |
+| Community | 4/5 | H | 25 contributors, growing community, responsive to issues within 24-48 hours |
+| Documentation | 5/5 | M | Excellent docs site, migration guide from competing-lib, comprehensive examples |
+| Dependency Footprint | 5/5 | M | Zero dependencies, tree-shakeable, 12KB minified+gzipped |
+| Production Adoption | 3/5 | M | 8K dependents (low compared to established alternative with 200K, but growing 40% YoY) |
 | License | 5/5 | H | MIT license |
-| API Stability | 5/5 | M | Stable v2.x API, clear semver |
-| Funding/Sustainability | 3/5 | M | OpenCollective with modest funding |
-| Ecosystem Momentum | 5/5 | L | Growing, recommended alternative to moment |
+| API Stability | 5/5 | M | Stable v2.x API, excellent semver adherence, clear deprecation cycle |
+| Funding/Sustainability | 3/5 | M | GitHub Sponsors with modest funding, 2 part-time maintainers |
+| Ecosystem Momentum | 5/5 | L | Rapidly growing, recommended in official framework documentation, conference talks |
 
-**Weighted Score**: 46/50
+**Weighted Score**: 45/50
 
 ### Key Findings
 
 #### Strengths
-- Immutable, functional API (no date mutation bugs)
-- Excellent tree-shaking (import only what you use)
-- Comprehensive internationalization (i18n) support
-- TypeScript-first design with excellent types
-- Actively maintained with clear roadmap
+- Modern architecture solving known problems with established alternatives
+- Superior design (immutable, functional, tree-shakeable)
+- Excellent documentation including migration guides
 - Zero dependencies eliminates security concerns
+- Growing ecosystem momentum (40% YoY growth)
+- Framework vendors recommending as best practice
 
 #### Concerns
-- Smaller community than moment.js (but growing)
-- Less Stack Overflow coverage than established alternatives
-- Some learning curve for developers used to moment
+- Smaller community than 10-year-old established alternative
+- Less Stack Overflow coverage (newer library)
+- Some developers unfamiliar with modern patterns
+- Lower download count might signal less battle-testing
 
 ### Alternatives Considered
-- **moment.js**: Larger but deprecated, discourages new usage
-- **day.js**: Smaller but less comprehensive API
-- **Luxon**: From moment.js authors, more complex
-- **Native Temporal API**: Future standard, not yet stable
+- **established-lib**: 10x more downloads but deprecated, maintainers discourage new usage
+- **minimal-alternative**: Smaller footprint (8KB) but less comprehensive
+- **enterprise-option**: Corporate-backed but more complex, heavier (50KB)
 
 ### Recommendation Details
-date-fns represents a modern, well-designed approach to date handling. The lower download counts compared to moment.js don't indicate quality issues - rather, it's a newer library solving the problem better. The immutable API, tree-shaking support, and active maintenance make it an excellent choice.
+modern-alternative demonstrates that lower popularity doesn't indicate lower quality. Being newer with growing adoption is different from declining/abandoned. The superior architecture, excellent maintenance, and ecosystem momentum outweigh popularity concerns. Framework vendors recommending it signals quality validation.
+
+### Context: Popularity vs. Quality
+- Established alternative has 25x more downloads but is deprecated
+- modern-alternative growing 40% YoY indicates market validation
+- Quality metrics (maintenance, security, design) are excellent
+- Being "newer" isn't a flaw when improving on established patterns
 
 ### If You Proceed
-- **Version strategy**: Use v2.x, update with minor releases
-- **Import strategy**: Import individual functions for optimal bundle size
-- **TypeScript**: Leverage excellent built-in types
-- **i18n**: Configure locales as needed (many available)
-- **Monitoring**: Watch for v3.x (in development) migration path
+- **Version strategy**: Use stable v2.x, follow semver updates
+- **Migration path**: Excellent migration docs from established-lib available
+- **Team training**: Budget time for developers unfamiliar with modern patterns
+- **Monitoring**: Watch ecosystem adoption and maintainer activity
+- **Community**: Join GitHub Discussions for support (active community)
 
 ---
 
-## Example 4: request (Popular but Deprecated)
+## Example 4: deprecated-package (Popular but Unmaintained)
 
 ### Summary
-The request package was the most popular HTTP client for Node.js for years but was fully deprecated in 2020. Despite high download counts, it should not be used in new projects.
+deprecated-package is a hypothetical library that was industry-standard for years but is now officially deprecated and unmaintained. Despite continued high download counts from legacy projects, it must not be used in new projects.
 
-**Recommendation**: AVOID - Use alternatives
+**Recommendation**: AVOID - Use maintained alternatives
 **Risk Level**: High
 **Blockers Found**: Yes
 
 ### Blockers
-- ⛔ Officially deprecated by maintainers (February 2020)
+- ⛔ Officially deprecated by maintainers (announced 18 months ago)
 - ⛔ No security updates will be provided
-- ⛔ Large dependency footprint with known vulnerabilities
+- ⛔ Known unfixed vulnerabilities (CVE-2023-XXXXX rated 7.5/10)
 
 ### Evaluation Scores
 
 | Signal | Score | Weight | Notes |
 |--------|-------|--------|-------|
-| Maintenance | 1/5 | H | Officially deprecated, no updates since 2020 |
-| Security | 2/5 | H | Known vulnerabilities, no patches |
-| Community | 3/5 | H | Was large, now migrating away |
-| Documentation | 4/5 | M | Still comprehensive (historical) |
-| Dependency Footprint | 1/5 | M | 50+ transitive dependencies |
-| Production Adoption | 3/5 | M | Still widely used (legacy), declining |
-| License | 5/5 | H | Apache-2.0 license |
-| API Stability | 5/5 | M | Stable (frozen) |
-| Funding/Sustainability | 1/5 | H | No funding, officially unmaintained |
-| Ecosystem Momentum | 1/5 | L | Ecosystem moved to alternatives |
+| Maintenance | 1/5 | H | Deprecated, no commits for 18 months, issues closed without fixes |
+| Security | 1/5 | H | 3 known CVEs unfixed, maintainers stated no patches will be released |
+| Community | 2/5 | H | Historical community large, actively migrating away |
+| Documentation | 4/5 | M | Comprehensive historical docs (frozen) |
+| Dependency Footprint | 2/5 | M | 35+ transitive dependencies, several also unmaintained |
+| Production Adoption | 3/5 | M | Still 100K+ weekly downloads (legacy projects), declining 15% quarterly |
+| License | 5/5 | H | Apache-2.0 license (permissive) |
+| API Stability | 5/5 | M | Stable (frozen forever) |
+| Funding/Sustainability | 1/5 | H | No funding, maintainers moved to other projects |
+| Ecosystem Momentum | 1/5 | L | Ecosystem migrated to alternatives, no conference mentions |
 
-**Weighted Score**: 18/50 (AVOID due to deprecation blocker)
+**Weighted Score**: 16/50 (AVOID due to deprecation blocker)
 
 ### Key Findings
 
 #### Strengths (Historical)
-- Simple, intuitive API
-- Extensive documentation and examples
-- Wide adoption and community knowledge
+- Was industry-standard for 8+ years
+- Comprehensive documentation and examples
+- Wide historical adoption provided extensive Stack Overflow coverage
+- Simple, well-understood API
 
 #### Concerns
-- **Critical**: Officially deprecated with no security updates
-- **Critical**: Known security vulnerabilities unfixed
-- Large dependency tree (50+ packages) increases attack surface
-- Dependencies themselves may have vulnerabilities
-- Maintainers explicitly recommend alternatives
+- **Critical**: Official deprecation with explicit "do not use in new projects" warning
+- **Critical**: Known security vulnerabilities will never be patched
+- **Critical**: Transitive dependencies also aging/unmaintained
+- Large dependency tree (35+ packages) increases attack surface
+- Download counts misleading (legacy projects, not new adoption)
+- Maintainers recommend specific alternatives in deprecation notice
 
-### Alternatives (Recommended)
-- **axios**: Most popular alternative, promise-based
-- **got**: Modern, TypeScript-native, actively maintained
-- **node-fetch**: Fetch API for Node.js
-- **Native fetch**: Node.js 18+ includes fetch API
+### Alternatives (Recommended by Maintainers)
+- **modern-replacement**: Promise-based API, actively maintained, recommended by deprecated-package authors
+- **lightweight-option**: Minimal dependencies, smaller footprint
+- **framework-builtin**: Framework v3+ includes equivalent functionality natively
 
 ### Recommendation Details
-Despite request's historical popularity and still-high download counts, it must be avoided. Official deprecation means no security patches will be released. The maintainers themselves recommend migrating to alternatives.
+Official deprecation is an absolute blocker regardless of other factors. No security patches means any newly discovered vulnerabilities will remain unfixed. High download counts are misleading—they reflect legacy usage, not suitability for new projects.
 
-### If You're Using It (Migration Plan)
-1. **Immediate action**: Audit all uses of request in codebase
-2. **Choose alternative**: axios (simplest migration) or got (modern)
-3. **Migration strategy**:
-   ```javascript
-   // Old (request)
-   request('https://api.example.com', (err, res, body) => { ... });
+### Migration Context
+For teams currently using deprecated-package:
+1. **Assess impact**: Identify all usage in codebase
+2. **Choose alternative**: modern-replacement offers easiest migration path
+3. **Timeline**: Prioritize by security exposure (public-facing first)
+4. **Testing**: HTTP/network libraries require thorough integration testing
+5. **Monitor**: Run security audits before and after migration
 
-   // New (axios)
-   const response = await axios.get('https://api.example.com');
-   const body = response.data;
-   ```
-4. **Test thoroughly**: HTTP clients have subtle differences
-5. **Monitor**: Run security audits after migration
+### Migration Example
+```javascript
+// Old (deprecated-package)
+deprecated.method('https://api.example.com', (err, res, body) => {
+  if (err) return handleError(err);
+  processData(body);
+});
+
+// New (modern-replacement)
+try {
+  const response = await modernReplacement.get('https://api.example.com');
+  processData(response.data);
+} catch (err) {
+  handleError(err);
+}
+```
 
 ### Lessons Learned
 - High download counts don't indicate current suitability
-- Official deprecation is a hard blocker
-- Ecosystem momentum matters - tools move on
-- Plan for dependency migrations in long-lived projects
+- Official deprecation overrides all other positive signals
+- Security considerations are paramount—unmaintained = unacceptable
+- Plan for dependency lifecycle in long-lived projects
+- Ecosystem momentum matters—tools and standards evolve
 
 ---
 
@@ -263,15 +302,27 @@ Despite request's historical popularity and still-high download counts, it must 
 
 | Package | Type | Recommendation | Key Lesson |
 |---------|------|----------------|------------|
-| lodash | Established utility | ADOPT | Battle-tested reliability with zero deps |
-| left-pad | Micro-utility | AVOID | Write simple code yourself |
-| date-fns | Modern alternative | ADOPT | Don't penalize for lower popularity if quality high |
-| request | Deprecated popular | AVOID | Deprecation overrides all other signals |
+| well-maintained-lib | Established, high-quality | ADOPT | Strong signals across all dimensions = low risk |
+| tiny-util | Micro-package | AVOID | Simple code doesn't justify supply chain risk |
+| modern-alternative | Quality newer option | ADOPT | Don't penalize quality for lower popularity |
+| deprecated-package | Deprecated popular | AVOID | Deprecation and security override everything |
 
 ## How to Use These Examples
 
 1. **Template your evaluations**: Follow the structure (Summary, Scores, Findings, Alternatives, Recommendation)
-2. **Adapt weighting**: Adjust signal weights based on your dependency type
-3. **Cite evidence**: Include specific versions, dates, and metrics
-4. **Consider context**: What works for one project may not fit another
-5. **Think critically**: Don't mechanically score - understand the nuances
+2. **Gather real data**: These are hypothetical—always run actual commands for real evaluations
+3. **Adapt weighting**: Adjust signal weights based on your dependency type (critical vs. dev dependencies)
+4. **Cite evidence**: Include specific versions, dates, metrics, and command outputs
+5. **Consider context**: What works for one project may not fit another's risk tolerance
+6. **Think critically**: Don't mechanically score—understand nuances and special circumstances
+7. **Update regularly**: Real evaluations age quickly; re-evaluate critical dependencies periodically
+
+## Structure Breakdown
+
+Each example demonstrates:
+- **Clear recommendation** with reasoning
+- **Evidence-based scoring** (not gut feelings)
+- **Balanced analysis** (strengths AND concerns)
+- **Actionable alternatives** when recommending AVOID
+- **Contextual guidance** for ADOPT recommendations
+- **Lessons learned** to build evaluation intuition
