@@ -1,7 +1,7 @@
 {
   "name": "learnfrompast",
   "description": "Analyzes your shell command history, git workflows, Claude usage patterns, and evaluates dependencies to identify productivity improvements, automation opportunities, and help make informed decisions about package adoption",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": {
     "name": "Anthony Barbieri"
   },
