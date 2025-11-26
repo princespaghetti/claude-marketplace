@@ -36,6 +36,7 @@ This skill uses progressive disclosure - core framework below, detailed guidance
 | File | When to Consult |
 |------|-----------------|
 | **[WORKFLOW.md](./WORKFLOW.md)** | Detailed step-by-step evaluation process, performance tips, pitfalls |
+| **[SCRIPT_USAGE.md](./SCRIPT_USAGE.md)** | Automated data gathering script (optional efficiency tool) |
 | **[COMMANDS.md](./COMMANDS.md)** | Ecosystem-specific commands (npm, PyPI, Cargo, Go, etc.) |
 | **[SIGNAL_DETAILS.md](./SIGNAL_DETAILS.md)** | Deep guidance for scoring each of the 10 signals |
 | **[ECOSYSTEM_GUIDES.md](./ECOSYSTEM_GUIDES.md)** | Ecosystem-specific norms and considerations |
@@ -75,6 +76,19 @@ Evaluate dependencies using these ten key signals:
 **Process:** Quick assessment → Data gathering → Scoring → Report generation
 
 See **[WORKFLOW.md](./WORKFLOW.md)** for detailed step-by-step guidance, performance tips, and workflow variants.
+
+### Optional: Automated Data Gathering
+
+An optional Python script (`scripts/dependency_evaluator.py`) can automate initial data gathering for supported ecosystems (npm, pypi, cargo, go). The script:
+- Runs ecosystem commands automatically
+- Fetches GitHub API data
+- Outputs structured JSON
+- Uses only Python standard library (no external dependencies)
+
+**When to use:** Save 10-15 minutes on repetitive command execution
+**When to skip:** Unsupported ecosystem, Python unavailable, prefer manual control
+
+See **[SCRIPT_USAGE.md](./SCRIPT_USAGE.md)** for complete documentation. The skill works perfectly fine without the script using manual workflow.
 
 ## Before You Evaluate: Is a Dependency Needed?
 

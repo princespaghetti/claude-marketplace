@@ -8,6 +8,8 @@ Tests are organized by component:
 
 - **workflow-analyzer/** - Tests for the Claude Code workflow analyzer script
   - See [workflow-analyzer/TESTING.md](workflow-analyzer/TESTING.md) for details
+- **dependency-evaluator/** - Tests for the dependency evaluator script
+  - See [dependency-evaluator/TESTING.md](dependency-evaluator/TESTING.md) for details
 
 ## Why Tests are Here
 

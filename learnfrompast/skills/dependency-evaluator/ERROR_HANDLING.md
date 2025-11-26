@@ -4,6 +4,7 @@ This guide provides fallback strategies when commands fail, data is unavailable,
 
 ## Table of Contents
 
+- [Using the Automated Script](#using-the-automated-script)
 - [Missing GitHub Repository](#missing-github-repository)
 - [GitHub CLI (`gh`) Not Available](#github-cli-gh-not-available)
 - [Package Not Found in Registry](#package-not-found-in-registry)
@@ -11,6 +12,43 @@ This guide provides fallback strategies when commands fail, data is unavailable,
 - [Command Failures](#command-failures)
 - [Incomplete or Missing Data](#incomplete-or-missing-data)
 - [Network/API Rate Limiting](#networkapi-rate-limiting)
+
+---
+
+## Using the Automated Script
+
+**Scenario:** The `dependency_evaluator.py` script is available and can automate error handling.
+
+### When Script Helps
+
+The automated script (see [SCRIPT_USAGE.md](./SCRIPT_USAGE.md)) handles many common errors automatically:
+- **Missing commands**: Warns and continues with available data
+- **Network errors**: Retries with fallback strategies (gh CLI → direct API)
+- **Rate limiting**: Reports issue clearly in warnings array
+- **Malformed data**: Catches JSON parsing errors gracefully
+
+### Script as First Step
+
+For supported ecosystems (npm, pypi, cargo, go), try the script first:
+
+```bash
+python3 scripts/dependency_evaluator.py <package> <ecosystem> > data.json
+```
+
+**Review the output:**
+```json
+{
+  "errors": ["Critical issues that blocked evaluation"],
+  "warnings": ["Non-critical issues, evaluation continued"]
+}
+```
+
+**If errors present:** Handle based on error type (see sections below)
+**If only warnings:** Proceed with evaluation, noting limitations in report
+
+### Fallback to Manual
+
+If script fails completely or for unsupported ecosystems, use manual workflow with command-specific fallbacks below.
 
 ---
 

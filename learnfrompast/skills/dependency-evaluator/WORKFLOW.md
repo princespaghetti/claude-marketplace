@@ -97,7 +97,86 @@ Before evaluating a specific package, ask: **Is a dependency actually needed?**
 → Skip to Phase 4, generate AVOID recommendation with alternatives
 
 **If no blockers:**
-→ Proceed to Phase 2 (Data Gathering)
+→ Proceed to Phase 1.5 (Automated Data Gathering) or Phase 2 (Manual Data Gathering)
+
+---
+
+## Phase 1.5: Automated Data Gathering (Optional)
+
+**Goal:** Use the dependency evaluator script to quickly gather baseline data.
+
+**When to use:**
+- You have Python 3.7+ available
+- The package ecosystem is supported (npm, pypi, cargo, go)
+- You want to save 10-15 minutes of manual command execution
+
+**When to skip:**
+- Python not available
+- Unsupported ecosystem (Maven, RubyGems, etc.)
+- You prefer full manual control
+- Network/tool availability issues
+
+### Using the Script
+
+```bash
+cd learnfrompast/skills/dependency-evaluator
+python3 scripts/dependency_evaluator.py <package-name> <ecosystem> > data.json
+```
+
+**Examples:**
+```bash
+# npm package
+python3 scripts/dependency_evaluator.py lodash npm > lodash-data.json
+
+# PyPI package
+python3 scripts/dependency_evaluator.py requests pypi > requests-data.json
+
+# Cargo crate
+python3 scripts/dependency_evaluator.py serde cargo > serde-data.json
+```
+
+### What the Script Provides
+
+The script automatically gathers:
+- ✓ Registry metadata (version, license, description)
+- ✓ Version history and release count
+- ✓ GitHub repository data (stars, issues, contributors)
+- ✓ Community health metrics
+- ✓ Structured error/warning messages
+
+The script has limitations:
+- ✗ npm audit (requires package.json context)
+- ✗ Dependency tree analysis (requires installation)
+- ✗ Manual investigation (documentation quality, ecosystem trends)
+
+See [SCRIPT_USAGE.md](./SCRIPT_USAGE.md) for detailed documentation.
+
+### Interpreting Script Output
+
+Review the JSON output:
+
+```json
+{
+  "registry_data": { ... },    // Use for Signals 1, 6, 7
+  "github_data": { ... },      // Use for Signals 1, 2, 3, 9
+  "security_data": { ... },    // Use for Signal 2 (often limited)
+  "dependency_footprint": { ... }, // Use for Signal 5 (often limited)
+  "warnings": [ ... ],         // Note data limitations
+  "errors": [ ... ]            // Critical issues found
+}
+```
+
+**If errors are present:** Verify package name, check network, review error messages
+
+**If warnings are present:** Note limitations in your final report
+
+### Decision Point
+
+**If script succeeded:**
+→ Proceed to Phase 2 to fill gaps (documentation, manual investigation)
+
+**If script failed:**
+→ Proceed to Phase 2 (Manual Data Gathering) using commands from COMMANDS.md
 
 ---
 
