@@ -97,24 +97,22 @@ Before evaluating a specific package, ask: **Is a dependency actually needed?**
 → Skip to Phase 4, generate AVOID recommendation with alternatives
 
 **If no blockers:**
-→ Proceed to Phase 1.5 (Automated Data Gathering) or Phase 2 (Manual Data Gathering)
+→ **Default:** Proceed to Phase 1.5 (Automated Data Gathering Script)
+→ **Fallback:** Skip to Phase 2 (Manual Data Gathering) only if script unavailable
 
 ---
 
-## Phase 1.5: Automated Data Gathering (Optional)
+## Phase 1.5: Automated Data Gathering (Recommended)
 
 **Goal:** Use the dependency evaluator script to quickly gather baseline data.
 
-**When to use:**
-- You have Python 3.7+ available
-- The package ecosystem is supported (npm, pypi, cargo, go)
-- You want to save 10-15 minutes of manual command execution
+**Default approach:** Try the script first for supported ecosystems (npm, pypi, cargo, go). It saves 10-15 minutes of manual command execution and provides structured, complete data automatically.
 
-**When to skip:**
-- Python not available
-- Unsupported ecosystem (Maven, RubyGems, etc.)
-- You prefer full manual control
-- Network/tool availability issues
+**Skip the script only if:**
+- Python 3.7+ is not available in your environment
+- Unsupported ecosystem (Maven, RubyGems, NuGet, etc.)
+- Script fails or produces errors (then fall back to manual workflow)
+- Specific network/firewall restrictions prevent API access
 
 ### Using the Script
 
@@ -183,6 +181,8 @@ Review the JSON output:
 ## Phase 2: Data Gathering
 
 **Goal:** Collect evidence for all 10 evaluation signals efficiently.
+
+> **Note:** If you skipped Phase 1.5 or the script provided incomplete data, use this phase to manually gather remaining information. If you used the script successfully, use this phase to fill gaps the script couldn't cover (documentation quality, manual investigation, ecosystem trends).
 
 ### General Strategy
 

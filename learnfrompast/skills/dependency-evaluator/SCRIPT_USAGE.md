@@ -10,7 +10,9 @@ The dependency evaluator script automates the tedious parts of dependency evalua
 - Parsing and structuring the results
 - Handling errors and edge cases gracefully
 
-**Important**: The script is an **optional tool** for efficiency. The skill works perfectly fine without it using the manual workflow described in [WORKFLOW.md](./WORKFLOW.md).
+**Recommended approach**: Use the script as your default data gathering method for npm, PyPI, Cargo, and Go packages. It saves time, ensures consistency, and reduces the chance of missing important data points.
+
+**Manual fallback**: The skill works perfectly fine without the script using the manual workflow described in [WORKFLOW.md](./WORKFLOW.md) - use this for unsupported ecosystems or if the script fails.
 
 ## Prerequisites
 

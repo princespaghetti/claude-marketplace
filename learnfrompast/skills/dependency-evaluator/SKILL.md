@@ -77,16 +77,19 @@ Evaluate dependencies using these ten key signals:
 
 See **[WORKFLOW.md](./WORKFLOW.md)** for detailed step-by-step guidance, performance tips, and workflow variants.
 
-### Optional: Automated Data Gathering
+### Automated Data Gathering (Recommended)
 
-An optional Python script (`scripts/dependency_evaluator.py`) can automate initial data gathering for supported ecosystems (npm, pypi, cargo, go). The script:
+A Python script (`scripts/dependency_evaluator.py`) automates initial data gathering for supported ecosystems (npm, pypi, cargo, go). The script:
 - Runs ecosystem commands automatically
 - Fetches GitHub API data
 - Outputs structured JSON
 - Uses only Python standard library (no external dependencies)
+- Saves 10-15 minutes per evaluation
 
-**When to use:** Save 10-15 minutes on repetitive command execution
-**When to skip:** Unsupported ecosystem, Python unavailable, prefer manual control
+**Default approach:** Try the script first - it provides more complete and consistent data gathering. Only fall back to manual workflow if the script is unavailable or fails.
+
+**Use the script when:** Evaluating npm, PyPI, Cargo, or Go packages (most common ecosystems)
+**Use manual workflow when:** Unsupported ecosystem, Python unavailable, or script errors occur
 
 See **[SCRIPT_USAGE.md](./SCRIPT_USAGE.md)** for complete documentation. The skill works perfectly fine without the script using manual workflow.
 

@@ -408,9 +408,11 @@ def main():
     # Output JSON to stdout
     print(json.dumps(result, indent=2))
 
-    # Return non-zero exit code if there were errors
+    # Exit with non-zero code if there were errors
     if result['errors']:
         sys.exit(1)
+    else:
+        sys.exit(0)
 
 
 if __name__ == '__main__':
