@@ -2,6 +2,30 @@
 
 This file contains all ecosystem-specific commands for gathering dependency information. Organize your investigation by the signals you're evaluating, then run the appropriate commands for your package's ecosystem.
 
+## Table of Contents
+
+### By Signal
+- [1. Activity and Maintenance Patterns](#1-activity-and-maintenance-patterns)
+- [2. Security Posture](#2-security-posture)
+- [3. Community Health](#3-community-health)
+- [4. Documentation Quality](#4-documentation-quality)
+- [5. Dependency Footprint](#5-dependency-footprint)
+- [6. Production Adoption](#6-production-adoption)
+- [7. License Compatibility](#7-license-compatibility)
+- [8-10. Other Signals](#8-10-other-signals)
+
+### By Ecosystem
+- [Node.js / npm Complete Checklist](#nodejs--npm-complete-checklist)
+- [Python / PyPI Complete Checklist](#python--pypi-complete-checklist)
+- [Rust / Cargo Complete Checklist](#rust--cargo-complete-checklist)
+- [Go Complete Checklist](#go-complete-checklist)
+- [Java / Maven Complete Checklist](#java--maven-complete-checklist)
+
+### Tips
+- [Command Usage Tips](#tips-for-effective-command-usage)
+
+---
+
 ## Quick Command Lookup by Signal
 
 ### 1. Activity and Maintenance Patterns

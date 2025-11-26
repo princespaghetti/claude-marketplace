@@ -2,6 +2,99 @@
 
 Different language ecosystems have different norms, risks, and best practices. Use this guide to adjust your evaluation criteria based on the package ecosystem.
 
+## Table of Contents
+
+- [Ecosystem Baselines](#ecosystem-baselines)
+- [Node.js / npm](#nodejs--npm)
+- [Python / PyPI](#python--pypi)
+- [Rust / Cargo](#rust--cargo)
+- [Go](#go)
+- [Ruby / RubyGems](#ruby--rubygems)
+- [Java / Maven Central](#java--maven-central)
+- [Cross-Ecosystem Patterns](#cross-ecosystem-patterns)
+- [Adjusting Your Evaluation](#adjusting-your-evaluation)
+
+---
+
+## Ecosystem Baselines
+
+Use these baselines for ecosystem-relative comparisons. These represent typical patterns as of 2025; use as context not rigid rules.
+
+### Release Cadence Norms
+
+| Ecosystem | Actively Developed | Mature/Stable | Concerning |
+|-----------|-------------------|---------------|------------|
+| npm | Monthly+ releases | Quarterly releases | >6 months no release |
+| PyPI | Monthly-quarterly | Bi-annual releases | >9 months no release |
+| Cargo | Bi-monthly to quarterly | Annual releases OK | >12 months no release |
+| Go | Quarterly typical | Annual releases OK | >12 months no release |
+| RubyGems | Monthly for Rails-related | Quarterly for utilities | >6 months no release |
+| Maven | Quarterly typical | Bi-annual for mature | >9 months no release |
+
+**Key:** "Concerning" means outlier for actively developed packages; mature packages may legitimately have longer gaps.
+
+### Dependency Count Norms
+
+| Ecosystem | Light | Typical | Heavy | Extreme |
+|-----------|-------|---------|-------|---------|
+| npm | <10 | 20-50 | 100-150 | 200+ |
+| PyPI | <5 | 10-30 | 50-80 | 100+ |
+| Cargo | <10 | 20-40 | 60-80 | 100+ |
+| Go | <5 | 5-20 | 30-40 | 50+ |
+| RubyGems | <5 | 10-25 | 40-60 | 80+ |
+| Maven | <10 | 20-50 | 80-120 | 150+ |
+
+**Counts are total transitive dependencies.** Adjust expectations based on package type (frameworks have more).
+
+### Download Thresholds (Weekly)
+
+| Ecosystem | Niche | Moderate | Popular | Very Popular |
+|-----------|-------|----------|---------|--------------|
+| npm | <500 | 1k-10k | 50k-100k | 500k+ |
+| PyPI | <100 | 500-5k | 20k-50k | 200k+ |
+| Cargo | <50 | 200-2k | 10k-30k | 100k+ |
+| RubyGems | <100 | 500-5k | 20k-50k | 200k+ |
+
+**Note:** Downloads alone don't indicate quality. Niche packages can be excellent; popular packages can be deprecated.
+
+### Issue Response Time Norms
+
+| Ecosystem | Excellent | Good | Acceptable | Concerning |
+|-----------|-----------|------|------------|------------|
+| npm (popular) | Hours-1 day | 2-7 days | 2-4 weeks | >1 month |
+| npm (smaller) | 1-3 days | 1-2 weeks | 1 month | >2 months |
+| PyPI | 1-3 days | 1-2 weeks | 3-4 weeks | >1 month |
+| Cargo | 1-2 days | 3-7 days | 2-3 weeks | >1 month |
+| Go | 1-3 days | 1-2 weeks | 3-4 weeks | >1 month |
+
+**For security issues:** Expect 24-48hr acknowledgment regardless of ecosystem.
+
+### Documentation Expectations
+
+| Ecosystem | Minimum Expected | Excellent |
+|-----------|------------------|-----------|
+| npm | README with examples, TypeScript types | Dedicated docs site, migration guides, playground |
+| PyPI | README with examples, type hints | ReadTheDocs site, Sphinx docs, examples repo |
+| Cargo | README with examples, rustdoc | docs.rs complete, examples in repo, book/guide |
+| Go | README with examples, godoc | pkg.go.dev complete, examples, design docs |
+| RubyGems | README with examples | RDoc/YARD docs, Rails integration guide |
+
+### Comparative Assessment Guidelines
+
+**Use these baselines to ask:**
+- Is this package's release cadence below the norm for its ecosystem and maturity level?
+- Is the dependency count in the top quartile for similar packages in this ecosystem?
+- Is the issue response time significantly slower than ecosystem expectations?
+- Are downloads declining while ecosystem overall is growing?
+
+**Example application:**
+- npm package with 150 transitive deps → "Heavy" but not extreme; acceptable for framework, concerning for utility
+- Cargo crate with no release in 10 months → Not yet concerning for mature stable crate
+- PyPI package with 200 deps → Extreme; investigate why so many
+- Go module with 40 deps → Unusual for Go (stdlib-first culture); investigate
+
+---
+
 ## Node.js / npm
 
 ### Ecosystem Characteristics

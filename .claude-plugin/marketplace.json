@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "A collection of developer productivity plugins for Claude Code",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "repository": "https://github.com/princespaghetti/claude-marketplace"
   },
   "plugins": [
@@ -13,7 +13,7 @@
       "name": "learnfrompast",
       "source": "./learnfrompast",
       "description": "Analyzes your shell command history, git workflows, Claude usage patterns, and evaluates dependencies to identify productivity improvements, automation opportunities, and help make informed decisions about package adoption",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "license": "MIT",
       "repository": "https://github.com/princespaghetti/claude-marketplace",
       "keywords": ["shell", "history", "productivity", "analysis", "zsh", "bash", "automation", "git", "workflow", "version-control", "patterns", "commands", "dependencies", "packages", "npm", "pip", "cargo", "security", "evaluation"],

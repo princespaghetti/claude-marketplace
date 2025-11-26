@@ -31,14 +31,23 @@ Activate this skill when users:
 
 ## Reference Files
 
-This skill uses progressive disclosure - core framework is below, detailed guidance in reference files:
+This skill uses progressive disclosure - core framework below, detailed guidance in reference files:
 
-- **[COMMANDS.md](./COMMANDS.md)** - Ecosystem-specific commands for gathering dependency data
-- **[SIGNAL_DETAILS.md](./SIGNAL_DETAILS.md)** - Deep guidance for each of the 10 evaluation signals
-- **[ECOSYSTEM_GUIDES.md](./ECOSYSTEM_GUIDES.md)** - Ecosystem-specific considerations (npm, PyPI, Cargo, etc.)
-- **[EXAMPLES.md](./EXAMPLES.md)** - Real-world evaluation examples
+| File | When to Consult |
+|------|-----------------|
+| **[WORKFLOW.md](./WORKFLOW.md)** | Detailed step-by-step evaluation process, performance tips, pitfalls |
+| **[COMMANDS.md](./COMMANDS.md)** | Ecosystem-specific commands (npm, PyPI, Cargo, Go, etc.) |
+| **[SIGNAL_DETAILS.md](./SIGNAL_DETAILS.md)** | Deep guidance for scoring each of the 10 signals |
+| **[ECOSYSTEM_GUIDES.md](./ECOSYSTEM_GUIDES.md)** | Ecosystem-specific norms and considerations |
+| **[EXAMPLES.md](./EXAMPLES.md)** | Worked evaluation examples (ADOPT, AVOID, EVALUATE FURTHER) |
+| **[ERROR_HANDLING.md](./ERROR_HANDLING.md)** | Fallback strategies when data unavailable or commands fail |
 
-Consult these files as needed during evaluation.
+**Quick navigation by ecosystem:**
+- **npm** → COMMANDS.md § Node.js + ECOSYSTEM_GUIDES.md § npm
+- **PyPI** → COMMANDS.md § Python + ECOSYSTEM_GUIDES.md § PyPI
+- **Cargo** → COMMANDS.md § Rust + ECOSYSTEM_GUIDES.md § Cargo
+- **Go** → COMMANDS.md § Go + ECOSYSTEM_GUIDES.md § Go
+- **Other** → COMMANDS.md for ecosystem-specific commands
 
 ## Evaluation Framework
 
@@ -59,52 +68,21 @@ Evaluate dependencies using these ten key signals:
 **For ecosystem-specific commands**, see [COMMANDS.md](./COMMANDS.md).
 **For ecosystem considerations**, see [ECOSYSTEM_GUIDES.md](./ECOSYSTEM_GUIDES.md).
 
-## Evaluation Workflow
+## Evaluation Approach
 
-Follow this process for thorough, systematic evaluation:
+**Goal:** Provide evidence-based recommendations (ADOPT / EVALUATE FURTHER / AVOID) by systematically assessing 10 quality signals.
 
-### Phase 1: Quick Assessment
-1. Identify package ecosystem (npm, PyPI, Cargo, etc.)
-2. Check for immediate dealbreakers (see Critical Red Flags below)
-3. If blocker found → Skip to recommendation: AVOID with explanation
+**Process:** Quick assessment → Data gathering → Scoring → Report generation
 
-### Phase 2: Data Gathering
-1. Identify relevant commands for ecosystem (see COMMANDS.md)
-2. Run commands in parallel where possible (save time)
-3. For each of 10 signals, collect at least 2 data points
-4. Save command outputs with timestamps for evidence
+See **[WORKFLOW.md](./WORKFLOW.md)** for detailed step-by-step guidance, performance tips, and workflow variants.
 
-### Phase 3: Scoring & Analysis
-1. Score each signal 1-5 based on evidence (see SIGNAL_DETAILS.md)
-2. Apply weights (H/M/L) based on dependency type (see Scoring Weights below)
-3. Note any concerns where Security or Maintenance ≤ 2
-4. Calculate weighted score
+## Before You Evaluate: Is a Dependency Needed?
 
-### Phase 4: Report Generation
-1. Use Output Format template (below)
-2. Include specific versions, dates, and metrics as evidence
-3. Ensure 2+ strengths and 2+ concerns listed
-4. Provide clear recommendation with reasoning
-5. If AVOID: suggest alternatives
-6. If ADOPT: provide "If You Proceed" guidance
+**Write it yourself if:** Functionality is <50 lines of straightforward code, or you only need a tiny subset of features.
 
-**Checkpoint**: Before presenting, verify all claims are evidence-based with specific data cited.
+**Use a dependency if:** Problem is complex (crypto, dates, parsing), correctness is critical, or ongoing maintenance would be significant.
 
-## When to Reconsider Adding a Dependency
-
-Before detailed evaluation, ask: Is the dependency actually needed?
-
-### Write It Yourself If:
-- The functionality is < 50 lines of straightforward code
-- You only need a small subset of the package's features
-- The package adds significant weight for minimal functionality
-- Example: Don't add a 500KB package to pad strings or check if a number is odd
-
-### Use the Dependency If:
-- The problem domain is complex (crypto, date/time, parsing)
-- Correctness is critical and well-tested implementations exist
-- The functionality would require significant ongoing maintenance
-- You need the full feature set, not just one function
+See **[WORKFLOW.md](./WORKFLOW.md)** § Pre-Evaluation for detailed decision framework.
 
 ## Output Format
 
@@ -224,40 +202,6 @@ These issues trigger automatic AVOID recommendation:
 - ⛔ No license: No license file means all rights reserved (legally risky)
 - ⛔ License change without notice: Recent sneaky change to restrictive terms
 
-## Common Pitfalls to Avoid
-
-**Don't:**
-- Rely on download counts alone (bot traffic inflates npm stats)
-- Dismiss single-maintainer projects automatically (many excellent tools have one maintainer)
-- Penalize stable libraries for low commit frequency (may indicate "done" not "abandoned")
-- Assume high GitHub stars = good quality
-- Make assumptions - always run actual commands
-
-**Do:**
-- Verify package identity (check for typosquatting before installing)
-- Check transitive dependencies, not just the direct package
-- Consider the user's specific use case when weighting signals
-- Cite specific versions, dates, and metrics for all claims
-- Provide alternatives if recommending AVOID
-- Run commands rather than making assumptions
-
-## Performance Guidance
-
-To minimize token usage and maximize efficiency:
-
-1. **Run commands in parallel**: Independent commands can run simultaneously
-   ```bash
-   # Example
-   gh api repos/{owner}/{repo} &
-   npm view <package> time &
-   wait
-   ```
-
-2. **Early exit on blockers**: If Critical Red Flags found, skip detailed scoring
-
-3. **Reference files on-demand**: Only consult COMMANDS.md / SIGNAL_DETAILS.md when needed
-
-4. **Save common data**: If evaluating multiple packages, note common ecosystem information once
 
 ## Self-Validation Checklist
 
@@ -272,41 +216,14 @@ Before presenting your report, verify:
 - [ ] "If You Proceed" section tailored to specific risks found?
 - [ ] Recommendation aligns with weighted score and blocker rules?
 
-## Example Invocations
+## Evaluation Principles
 
-- "Should I use lodash for this project?"
-- "Evaluate the axios package for HTTP requests"
-- "Is date-fns a good choice for date handling?"
-- "Compare express vs fastify vs koa"
-- "Should I add this dependency: react-query"
-- "Is this package safe to use in production?"
+**Be Evidence-Based:** Cite specific versions, dates, and metrics. Run commands to gather data, never assume.
 
-## Guidelines
+**Be Balanced:** Acknowledge strengths AND weaknesses. Single issues rarely disqualify (unless blocker).
 
-### Be Evidence-Based
-- Always cite specific data points with versions and dates
-- Run commands to gather evidence, don't assume
-- Reference actual metrics (downloads, contributors, CVE numbers)
+**Be Actionable:** Provide clear ADOPT/EVALUATE FURTHER/AVOID with alternatives and risk mitigation.
 
-### Be Balanced
-- Acknowledge both strengths and weaknesses
-- Don't dismiss packages for single issues (unless blocker)
-- Consider the specific use case context
+**Be Context-Aware:** Auth libraries need stricter scrutiny than dev tools. Adjust for ecosystem norms (see ECOSYSTEM_GUIDES.md).
 
-### Be Actionable
-- Provide clear ADOPT / EVALUATE FURTHER / AVOID recommendation
-- Include next steps and alternatives
-- Tailor "If You Proceed" advice to identified risks
-
-### Consider Context
-- A CLI color library needs different scrutiny than an auth library
-- Development dependencies have different risk profiles than production deps
-- Project scale affects acceptable risk tolerance
-- Ecosystem norms vary (see ECOSYSTEM_GUIDES.md)
-
-## Privacy and Security
-
-- Verify license compatibility before recommending
-- Consider supply chain risks for sensitive applications
-- Note when packages require additional security review
-- Flag packages requesting unusual permissions
+See **[WORKFLOW.md](./WORKFLOW.md)** § Common Pitfalls and § Guidelines for detailed best practices.

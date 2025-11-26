@@ -2,6 +2,21 @@
 
 This file provides deep guidance for each of the 10 evaluation signals used in dependency assessment. For each signal, you'll find what it measures, how to investigate it, how to interpret results, and what constitutes red vs. green flags.
 
+## Assessment Philosophy: Ecosystem-Relative Evaluation
+
+**Use comparative assessment rather than absolute thresholds.** What's "normal" varies significantly by:
+- **Ecosystem**: npm vs PyPI vs Cargo vs Go have different cultural norms
+- **Package type**: Frameworks vs utilities vs libraries have different expectations
+- **Maturity**: New packages vs mature stable packages have different activity patterns
+
+**Throughout this guide:**
+- Red/green flags are framed as comparisons to ecosystem norms
+- Specific numbers provide context, not rigid cutoffs
+- "Significantly below/above norm" means outlier for package category in its ecosystem
+- Always compare package to similar packages in same ecosystem before scoring
+
+See [ECOSYSTEM_GUIDES.md](./ECOSYSTEM_GUIDES.md) for ecosystem-specific baselines and norms.
+
 ## 1. Activity and Maintenance Patterns
 
 ### What This Signal Measures
@@ -14,43 +29,52 @@ The frequency and consistency of package updates, bug fixes, and maintainer resp
 - Issue triage responsiveness
 - Consistency of maintenance over time
 
-### Temporal Context for Red Flags
+### Ecosystem-Relative Assessment
 
-These thresholds reflect typical 2024 software development cadences. Adjust based on technology maturity, domain stability, and ecosystem norms.
+**Compare package activity against ecosystem norms rather than absolute thresholds.** What's "normal" varies significantly by language, package type, and maturity.
 
-**Actively developed software:**
-- **Red flag**: No commits in 6+ months
-- **Rationale**: Active projects typically merge changes at least quarterly
-- **Context**: Newer technology and feature-rich tools expect faster iteration
+**Release Cadence Comparison:**
+- **Red flag**: Release cadence significantly below ecosystem norm for similar packages
+  - npm actively-developed packages: Most release monthly or more; quarterly is typical minimum
+  - Rust crates: Bi-monthly to quarterly is common; annual can be acceptable for stable crates
+  - Python packages: Monthly to quarterly for active development
+  - Go modules: Quarterly common; infrequent releases normal due to stdlib-first culture
+- **Assessment**: Is this package's release pattern an outlier for its category within its ecosystem?
 
-**Mature/stable libraries:**
-- **Red flag**: No commits in 2+ years AND unaddressed security issues
-- **Rationale**: Stability is acceptable; abandonment is not
-- **Green flag**: Inactivity with zero open security issues may indicate the library is "done"
-- **Context**: Protocol implementations, math utilities, and stable APIs may legitimately need few updates
+**Commit Activity Comparison:**
+- **Red flag**: Commit activity has ceased while similar packages maintain activity
+  - Look at comparable packages in same ecosystem/category
+  - Mature stable libraries may legitimately have low commit frequency
+  - New/actively-developed tools should show regular activity
+- **Green flag**: Inactivity with zero open security issues may indicate package is "done" (complete, not abandoned)
+- **Context**: Protocol implementations, math utilities, stable APIs may need few updates
 
-**Release cadence:**
-- **Red flag**: No releases in 12+ months despite merged PRs or open issues
-- **Rationale**: Suggests maintenance stagnation, not intentional stability
-- **Context**: Sporadic bursts followed by long silences indicate inconsistent maintenance
+**Issue Response Comparison:**
+- **Red flag**: Issue response time significantly slower than ecosystem norm
+  - npm: Hours to days typical for popular packages; weeks acceptable
+  - Smaller ecosystems: Days to weeks is normal
+  - Compare: Are issues being triaged, or ignored completely?
+- **Critical**: Unaddressed security issues override all activity metrics
 
-**Issue and PR backlog:**
-- **Red flag**: Large backlog of unaddressed issues (20+ open issues with no maintainer response)
-- **Red flag**: No releases in 12+ months despite merged PRs or filed issues
+**Backlog Assessment:**
+- **Red flag**: Issue backlog growing while similar packages maintain healthy triage
+  - npm popular packages: 20-50 open issues may be normal if being triaged
+  - Smaller projects: 10+ untriaged issues concerning
+  - Key: Are maintainers responding, even if not immediately fixing?
 
-### Red Flags
-- No commits in 6+ months for actively developed software
-- No commits in 2+ years AND unaddressed security issues for mature libraries
-- Sporadic bursts of activity followed by long silences
-- Large backlog (20+ issues) with no maintainer response
-- No releases in 12+ months despite merged PRs
+### Red Flags (Ecosystem-Relative)
+- Release cadence significantly below ecosystem median for package category
+- Commit activity ceased while comparable packages remain active
+- Issue response time far slower than ecosystem norm
+- Growing backlog with zero maintainer engagement
+- Unaddressed security issues (absolute red flag regardless of ecosystem)
 
-### Green Flags
-- Regular commits (even if small) for actively developed projects
-- Recent releases within last 6-12 months
-- Responsive issue triage (comments within days/weeks, not months)
-- Active pull request merging
-- For mature libraries: Security issues addressed promptly even if feature development is slow
+### Green Flags (Ecosystem-Relative)
+- Release cadence at or above ecosystem median
+- Commit activity appropriate for package maturity and ecosystem
+- Issue triage responsiveness comparable to or better than ecosystem norm
+- Active PR review and merging
+- Security issues addressed promptly even if feature development is slow
 
 ### Common False Positives
 - **Low activity in mature libraries**: A date library or cryptography implementation that hasn't changed in years might be complete, not abandoned. Check if issues are triaged and security updates still happen.
@@ -187,28 +211,49 @@ The size and complexity of the dependency tree, including transitive dependencie
 - Bundle size impact
 - Presence of native/binary dependencies
 
-### Interpreting Dependency Trees
-- **Total count**: Flag packages with >50 transitive dependencies for simple functionality
-- **Duplicate versions**: Multiple versions of the same package indicate potential conflicts
-- **Deep nesting**: Dependencies 5+ levels deep are harder to audit and update
-- **Abandoned dependencies**: Transitive deps that haven't been updated in years
-- **Size vs. function**: A 500KB+ package for a simple utility is excessive
+### Interpreting Dependency Trees (Ecosystem-Relative)
 
-### Red Flags
-- 50+ transitive dependencies for non-complex functionality
+**Compare dependency counts against ecosystem norms:**
+
+**Total Count Assessment:**
+- **npm**: 20-50 transitive deps common; 100+ raises concerns; 200+ is extreme
+- **Python/PyPI**: 10-30 transitive deps typical; 50+ concerning for utilities
+- **Rust/Cargo**: 20-40 transitive deps common (proc-macros inflate counts); 80+ heavy
+- **Go**: 5-20 deps typical (stdlib-first culture); 40+ unusual
+- **Key**: Compare functionality complexity to dependency count—simple utility with ecosystem-high dep count is red flag
+
+**Duplicate Versions:**
+- Multiple versions of same package indicate potential conflicts
+- More concerning in npm (version resolution complex) than Cargo (strict resolution)
+
+**Tree Depth:**
+- Deep nesting (5+ levels) harder to audit regardless of ecosystem
+- Rust proc-macro deps often add depth without adding risk
+
+**Abandoned Transitive Dependencies:**
+- Assess transitive deps using same maintenance criteria as direct deps
+- One abandoned transitive dep may not be blocker; many suggests poor dep hygiene
+
+**Bundle Size vs. Functionality:**
+- npm: Compare to similar packages—is this outlier for what it does?
+- Rust: Compile-time deps don't affect binary size, only build time
+- Assess: Does bundle size match functionality provided?
+
+### Red Flags (Ecosystem-Relative)
+- Dependency count in top quartile for package's functionality and ecosystem
 - Transitive dependencies with known vulnerabilities
-- Bloated bundle size for simple functionality
-- Unmaintained transitive dependencies
+- Bundle size significantly above ecosystem norm for similar functionality
+- Multiple unmaintained transitive dependencies
 - Conflicting dependency version requirements
-- Native dependencies when pure JavaScript would work
+- Native dependencies when ecosystem-standard pure implementation available
 
-### Green Flags
-- Minimal dependency tree (< 10 transitive deps for most packages)
-- Well-maintained, reputable dependencies
-- Tree-shakeable / modular imports
-- No native/binary dependencies unless necessary
+### Green Flags (Ecosystem-Relative)
+- Dependency count at or below ecosystem median for package type
+- All dependencies well-maintained and reputable
+- Tree-shakeable / modular imports (npm, modern JS)
+- Native deps only when necessary for performance/functionality
 - Flat, shallow dependency structure
-- Regular dependency updates
+- Dependencies regularly updated
 
 ### Common False Positives
 - **Framework packages**: Full frameworks (React, Vue, Angular) legitimately have more dependencies

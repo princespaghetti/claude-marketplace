@@ -1,21 +1,30 @@
 # Dependency Evaluation Examples
 
-## Important Note
+This file contains concrete worked examples demonstrating the evaluation framework in action. Each example shows the complete evaluation process, scoring rationale, and final recommendation.
 
-**These are hypothetical examples for demonstration purposes only.** They show how to structure evaluation reports, not actual package recommendations.
+**Important:** These are hypothetical packages created for teaching purposes. They illustrate evaluation methodology, not real package recommendations.
 
-For real evaluations:
-- Run actual commands to gather current data
-- Cite specific versions, dates, and metrics
-- Verify information is current before making decisions
-- Don't rely on these examples as factual assessments
+## Table of Contents
+
+- [Example 1: ExampleCo HTTP Client (npm) - ADOPT](#example-1-exampleco-http-client-npm---adopt)
+- [Example 2: legacy-parser (PyPI) - AVOID](#example-2-legacy-parser-pypi---avoid)
+- [Example 3: fast-compute (Rust) - ADOPT with Nuance](#example-3-fast-compute-rust---adopt-with-nuance)
+- [Example 4: mega-framework (npm) - EVALUATE FURTHER](#example-4-mega-framework-npm---evaluate-further)
+- [Key Takeaways](#key-takeaways-from-examples)
 
 ---
 
-## Example 1: well-maintained-lib (High Quality, Widely Adopted)
+## Example 1: ExampleCo HTTP Client (npm) - ADOPT
+
+**User Request:** "Should I use exampleco-http for making API requests in my Node.js application?"
+
+**Package Context:**
+- Name: exampleco-http (npm)
+- Dependency Type: Standard (HTTP client)
+- Use Case: REST API calls in backend service
 
 ### Summary
-well-maintained-lib is a hypothetical utility library with excellent maintenance practices, strong community support, and proven production reliability. This example demonstrates evaluating a high-quality, low-risk dependency.
+ExampleCo HTTP Client is a well-maintained, production-ready HTTP library with corporate backing, excellent security practices, and clean dependencies. Strong positive signals across all evaluation criteria make this a low-risk adoption.
 
 **Recommendation**: ADOPT
 **Risk Level**: Low
@@ -23,306 +32,328 @@ well-maintained-lib is a hypothetical utility library with excellent maintenance
 
 ### Evaluation Scores
 
-| Signal | Score | Weight | Notes |
-|--------|-------|--------|-------|
-| Maintenance | 5/5 | H | Regular releases every 2-3 months, last release 3 weeks ago (v4.2.1) |
-| Security | 5/5 | H | Security policy documented, 2 CVEs in history both patched within 48 hours |
-| Community | 5/5 | H | 45 active contributors, PRs merged within 3-7 days |
-| Documentation | 5/5 | M | Comprehensive docs site, API reference, migration guides for each major version |
-| Dependency Footprint | 5/5 | L | Zero dependencies, 45KB minified+gzipped |
-| Production Adoption | 5/5 | M | 180K+ dependents on npm, used by Fortune 500 companies |
-| License | 5/5 | H | MIT license, no transitive license issues |
-| API Stability | 5/5 | M | Strict semver since v1.0, currently at v4.2.1, clear deprecation policy |
-| Funding/Sustainability | 4/5 | M | OpenCollective with $15K/year, 3 full-time maintainers employed by sponsoring companies |
-| Ecosystem Momentum | 4/5 | L | Mature ecosystem, some functionality now available in language built-ins |
+| Signal (Weight) | Score | Evidence |
+|-----------------|-------|----------|
+| Maintenance (H) | 5/5   | Last release v2.4.1 on 2025-01-10. Weekly commits. 47 releases over 2 years. |
+| Security (H) | 5/5   | SECURITY.md present. 2 historical CVEs patched <48hrs. Dependabot enabled. |
+| Community (M) | 5/5   | 5 active maintainers from ExampleCo Inc. 89 contributors. PRs merged 2-4 days. |
+| Documentation (M) | 4/5   | Comprehensive docs site. API reference complete. TypeScript types. Minor: advanced examples limited. |
+| Dependency Footprint (M) | 5/5   | 8 total deps (2 direct, 6 transitive). Bundle: 45KB. No security issues. |
+| Production Adoption (M) | 5/5   | 50k weekly downloads. 1,200+ dependents. Featured in Node.js blog. |
+| License (H) | 5/5   | MIT. All deps MIT or Apache-2.0. No conflicts. |
+| API Stability (M) | 5/5   | Strict semver. v2.x stable 18 months. Deprecation warnings 6mo before removal. |
+| Funding (H) | 5/5   | Backed by ExampleCo Inc (series B). 3 full-time maintainers. |
+| Ecosystem Momentum (L) | 4/5   | Growing adoption. Ecosystem shifting to native fetch, but package adds value. |
 
-**Weighted Score**: 47/50
+**Weighted Score**: 48/50
 
 ### Key Findings
 
-#### Strengths
-- Zero-dependency architecture eliminates supply chain risks
-- Proven at scale with millions of daily downloads
-- Strong security track record with quick CVE response times
-- Active, diverse contributor base reduces bus factor
-- Excellent documentation reduces onboarding friction
+**Strengths:**
+- Corporate backing with 3 dedicated full-time engineers
+- Fast security response (48hr CVE patches historically)
+- Clean dependency tree (only 8 total packages)
+- Production-proven (50k weekly downloads, major adopters)
 
-#### Concerns
-- Some functionality overlaps with modern language built-ins (though library still adds value)
-- Bundle size acceptable but not minimal (45KB could be 20KB if refactored)
-- Funding is adequate but not exceptional for project scale
+**Concerns:**
+- Ecosystem gradual shift to native `fetch` API (2-3 year horizon)
+- Advanced use case documentation could be more comprehensive
 
 ### Alternatives Considered
-- **native-features**: For simple use cases, language built-ins may suffice
-- **lightweight-alternative**: Smaller bundle (15KB) but less comprehensive API
-- **competing-lib**: Similar features but less mature (only v2.0)
+- **Native fetch**: Zero dependencies but lacks retry/timeout/interceptor features
+- **axios**: Higher downloads but heavier deps (15+) and slower maintenance
+- **node-fetch**: Lightweight but minimal features
 
 ### Recommendation Details
-well-maintained-lib represents a textbook example of a high-quality dependency. Strong maintenance, security practices, community health, and production adoption make it low-risk. The zero-dependency footprint and permissive license eliminate common concerns.
+Exemplary well-maintained package. Corporate backing, responsive security, clean dependencies, and strong community make this low-risk for production use. While the ecosystem is moving toward native `fetch`, this package provides significant value-adds that native fetch lacks (retries, interceptors, transforms). ExampleCo has committed to maintenance through 2027+.
 
 ### If You Proceed
-- **Version strategy**: Pin to v4.x, review release notes for each minor update
-- **Import strategy**: Use tree-shakeable imports where available to minimize bundle size
-- **Monitoring**: Subscribe to GitHub releases and security advisories
-- **Performance**: Profile bundle size impact; consider code-splitting for large imports
-- **Consider alternatives**: Evaluate if newer language features can replace simpler use cases
+- Pin to `^2.4.0` for patches/minors
+- Monitor for ExampleCo native fetch migration plans
+- Enable Dependabot/GitHub security alerts
+- Review dependencies annually
 
 ---
 
-## Example 2: tiny-util (Micro-Package with Supply Chain Risk)
+## Example 2: legacy-parser (PyPI) - AVOID
+
+**User Request:** "I need to parse legacy data format files. Should I use legacy-parser?"
+
+**Package Context:**
+- Name: legacy-parser (PyPI)
+- Dependency Type: Standard (data parsing)
+- Use Case: Parsing proprietary legacy format
 
 ### Summary
-tiny-util is a hypothetical single-purpose utility package providing 15 lines of functionality. While technically sound, it represents disproportionate supply chain risk for minimal value.
+legacy-parser is an abandoned package with critical unpatched security vulnerabilities and zero maintainer activity for 3 years. Active CVEs including RCE make this completely unsuitable for any use.
 
-**Recommendation**: AVOID - Write yourself
-**Risk Level**: High (disproportionate risk-to-value ratio)
-**Blockers Found**: Yes
-
-### Blockers
-- ⛔ Extreme risk-to-value ratio: 15 lines of simple code creates unnecessary supply chain dependency
-- ⛔ Functionality trivially reproducible with language built-ins or 5 minutes of coding
-
-### Evaluation Scores
-
-| Signal | Score | Weight | Notes |
-|--------|-------|--------|-------|
-| Maintenance | 3/5 | H | Single maintainer, sporadic updates (last release 4 months ago) |
-| Security | 4/5 | H | No inherent vulnerabilities, but package could be compromised |
-| Community | 2/5 | H | Solo developer, no backup maintainers, 0 recent PR activity |
-| Documentation | 3/5 | M | README explains usage clearly, but minimal examples |
-| Dependency Footprint | 5/5 | M | Zero dependencies, 1.2KB total |
-| Production Adoption | 4/5 | M | 50K+ dependents (high for such simple functionality) |
-| License | 5/5 | H | MIT license |
-| API Stability | 5/5 | M | Stable v1.x API, unchanged for 2 years |
-| Funding/Sustainability | 1/5 | H | No funding, volunteer-maintained |
-| Ecosystem Momentum | 3/5 | L | Usage remains stable but no growth |
-
-**Weighted Score**: 28/50 (but AVOID due to blocker)
-
-### Key Findings
-
-#### Strengths
-- Simple, focused functionality
-- No dependencies reduces some risks
-- Permissive license
-- Proven stability (API unchanged)
-
-#### Concerns
-- **Critical**: 15 lines of code creates major supply chain dependency
-- Single point of failure (one maintainer with npm publish rights)
-- Functionality easily implementable in-house
-- Risk massively outweighs benefit
-- Package could be removed, compromised, or abandoned
-
-### Alternative Solution
-```javascript
-// Implement yourself (5 minutes):
-function utilityFunction(input, options = {}) {
-  // 10-15 lines of straightforward logic
-  // Full control, no external dependency
-  // Can be customized to exact needs
-  return result;
-}
-
-// Or use language built-ins:
-// Modern languages often have this functionality natively
-```
-
-### Recommendation Details
-This exemplifies when NOT to add a dependency. The infamous left-pad incident (2016) demonstrated that tiny packages can create massive ecosystem disruption. For such simple functionality, in-house implementation is vastly safer and provides full control.
-
-### Cost-Benefit Analysis
-- **Dependency cost**: Supply chain risk, package management overhead, potential for removal/compromise
-- **Dependency value**: Saves 5 minutes of implementation time
-- **Verdict**: Cost >>> Value
-
-### Lessons Learned
-- Simple utilities often aren't worth the dependency risk
-- Consider bus factor even for "safe" code
-- Maintain control over critical functionality
-- Language built-ins often replace simple utilities
-
----
-
-## Example 3: modern-alternative (Quality Library, Lower Popularity)
-
-### Summary
-modern-alternative is a hypothetical well-designed library that solves a problem better than established alternatives, but has lower download counts due to being newer. This demonstrates not penalizing quality for popularity.
-
-**Recommendation**: ADOPT
-**Risk Level**: Low
-**Blockers Found**: No
-
-### Evaluation Scores
-
-| Signal | Score | Weight | Notes |
-|--------|-------|--------|-------|
-| Maintenance | 5/5 | H | Active development, releases every 3-4 weeks, responsive maintainers |
-| Security | 5/5 | H | Zero CVEs, security-conscious architecture, Dependabot enabled |
-| Community | 4/5 | H | 25 contributors, growing community, responsive to issues within 24-48 hours |
-| Documentation | 5/5 | M | Excellent docs site, migration guide from competing-lib, comprehensive examples |
-| Dependency Footprint | 5/5 | M | Zero dependencies, tree-shakeable, 12KB minified+gzipped |
-| Production Adoption | 3/5 | M | 8K dependents (low compared to established alternative with 200K, but growing 40% YoY) |
-| License | 5/5 | H | MIT license |
-| API Stability | 5/5 | M | Stable v2.x API, excellent semver adherence, clear deprecation cycle |
-| Funding/Sustainability | 3/5 | M | GitHub Sponsors with modest funding, 2 part-time maintainers |
-| Ecosystem Momentum | 5/5 | L | Rapidly growing, recommended in official framework documentation, conference talks |
-
-**Weighted Score**: 45/50
-
-### Key Findings
-
-#### Strengths
-- Modern architecture solving known problems with established alternatives
-- Superior design (immutable, functional, tree-shakeable)
-- Excellent documentation including migration guides
-- Zero dependencies eliminates security concerns
-- Growing ecosystem momentum (40% YoY growth)
-- Framework vendors recommending as best practice
-
-#### Concerns
-- Smaller community than 10-year-old established alternative
-- Less Stack Overflow coverage (newer library)
-- Some developers unfamiliar with modern patterns
-- Lower download count might signal less battle-testing
-
-### Alternatives Considered
-- **established-lib**: 10x more downloads but deprecated, maintainers discourage new usage
-- **minimal-alternative**: Smaller footprint (8KB) but less comprehensive
-- **enterprise-option**: Corporate-backed but more complex, heavier (50KB)
-
-### Recommendation Details
-modern-alternative demonstrates that lower popularity doesn't indicate lower quality. Being newer with growing adoption is different from declining/abandoned. The superior architecture, excellent maintenance, and ecosystem momentum outweigh popularity concerns. Framework vendors recommending it signals quality validation.
-
-### Context: Popularity vs. Quality
-- Established alternative has 25x more downloads but is deprecated
-- modern-alternative growing 40% YoY indicates market validation
-- Quality metrics (maintenance, security, design) are excellent
-- Being "newer" isn't a flaw when improving on established patterns
-
-### If You Proceed
-- **Version strategy**: Use stable v2.x, follow semver updates
-- **Migration path**: Excellent migration docs from established-lib available
-- **Team training**: Budget time for developers unfamiliar with modern patterns
-- **Monitoring**: Watch ecosystem adoption and maintainer activity
-- **Community**: Join GitHub Discussions for support (active community)
-
----
-
-## Example 4: deprecated-package (Popular but Unmaintained)
-
-### Summary
-deprecated-package is a hypothetical library that was industry-standard for years but is now officially deprecated and unmaintained. Despite continued high download counts from legacy projects, it must not be used in new projects.
-
-**Recommendation**: AVOID - Use maintained alternatives
+**Recommendation**: AVOID
 **Risk Level**: High
 **Blockers Found**: Yes
 
 ### Blockers
-- ⛔ Officially deprecated by maintainers (announced 18 months ago)
-- ⛔ No security updates will be provided
-- ⛔ Known unfixed vulnerabilities (CVE-2023-XXXXX rated 7.5/10)
+⛔ **Active unpatched CVEs**: CVE-2023-12345 (RCE) and CVE-2024-67890 (DoS) public for 1+ year with no patches
+⛔ **Complete abandonment**: Zero activity for 3 years, no security response
+⛔ **Python 3.12 compatibility unknown**: No testing on modern Python
 
 ### Evaluation Scores
 
-| Signal | Score | Weight | Notes |
-|--------|-------|--------|-------|
-| Maintenance | 1/5 | H | Deprecated, no commits for 18 months, issues closed without fixes |
-| Security | 1/5 | H | 3 known CVEs unfixed, maintainers stated no patches will be released |
-| Community | 2/5 | H | Historical community large, actively migrating away |
-| Documentation | 4/5 | M | Comprehensive historical docs (frozen) |
-| Dependency Footprint | 2/5 | M | 35+ transitive dependencies, several also unmaintained |
-| Production Adoption | 3/5 | M | Still 100K+ weekly downloads (legacy projects), declining 15% quarterly |
-| License | 5/5 | H | Apache-2.0 license (permissive) |
-| API Stability | 5/5 | M | Stable (frozen forever) |
-| Funding/Sustainability | 1/5 | H | No funding, maintainers moved to other projects |
-| Ecosystem Momentum | 1/5 | L | Ecosystem migrated to alternatives, no conference mentions |
+| Signal (Weight) | Score | Evidence |
+|-----------------|-------|----------|
+| Maintenance (H) | 1/5   | Last commit 2022-03-15 (3 years ago). Last release v0.4.2 on 2022-03-10. |
+| Security (H) | 1/5   | 2 open CVEs (High RCE, Medium DoS). No security policy. No patches. |
+| Community (M) | 1/5   | Single maintainer (jsmith). 47 open issues, no responses 2+ years. |
+| Documentation (M) | 3/5   | Clear README with examples. Uses outdated Python 3.8 syntax. |
+| Dependency Footprint (M) | 4/5   | 3 direct, 8 total deps. Lightweight. One transitive dep unmaintained. |
+| Production Adoption (M) | 2/5   | 850 downloads/month (low). 12 dependents. Downloads declining -40% YoY. |
+| License (H) | 5/5   | MIT. Clean licensing. |
+| API Stability (M) | 2/5   | v0.4.x after 5+ years. Breaking changes in minors. No semver. |
+| Funding (L) | 1/5   | No funding. Abandoned volunteer project. |
+| Ecosystem Momentum (L) | 1/5   | Community migrated to alternatives. No Python 3.12 support verified. |
 
-**Weighted Score**: 16/50 (AVOID due to deprecation blocker)
+**Weighted Score**: 18/50
 
 ### Key Findings
 
-#### Strengths (Historical)
-- Was industry-standard for 8+ years
-- Comprehensive documentation and examples
-- Wide historical adoption provided extensive Stack Overflow coverage
-- Simple, well-understood API
+**Strengths:**
+- Clear basic documentation
+- Lightweight dependencies
+- Permissive MIT license
 
-#### Concerns
-- **Critical**: Official deprecation with explicit "do not use in new projects" warning
-- **Critical**: Known security vulnerabilities will never be patched
-- **Critical**: Transitive dependencies also aging/unmaintained
-- Large dependency tree (35+ packages) increases attack surface
-- Download counts misleading (legacy projects, not new adoption)
-- Maintainers recommend specific alternatives in deprecation notice
+**Concerns:**
+- Critical: CVE-2023-12345 RCE vulnerability unpatched
+- Complete abandonment (3 years zero activity)
+- No modern Python support verified
+- Declining usage (-40% YoY)
+- Unmaintained transitive dependency (old-xml-lib)
 
-### Alternatives (Recommended by Maintainers)
-- **modern-replacement**: Promise-based API, actively maintained, recommended by deprecated-package authors
-- **lightweight-option**: Minimal dependencies, smaller footprint
-- **framework-builtin**: Framework v3+ includes equivalent functionality natively
+### Recommended Alternatives
+- **modern-parser** (PyPI): Active fork with CVE patches. Same API. 5k downloads/month. 3-person team.
+- **fast-parse** (PyPI): Different API, supports same format. Well-maintained. 12k downloads/month.
+- **format-tools** (PyPI): Comprehensive legacy format tools. Larger but production-ready. 50k downloads/month.
 
 ### Recommendation Details
-Official deprecation is an absolute blocker regardless of other factors. No security patches means any newly discovered vulnerabilities will remain unfixed. High download counts are misleading—they reflect legacy usage, not suitability for new projects.
+**Do not use legacy-parser.** Critical RCE vulnerability (CVE-2023-12345) with no patch. Project abandoned in 2022. Using this package exposes your application to known exploitable vulnerabilities.
 
-### Migration Context
-For teams currently using deprecated-package:
-1. **Assess impact**: Identify all usage in codebase
-2. **Choose alternative**: modern-replacement offers easiest migration path
-3. **Timeline**: Prioritize by security exposure (public-facing first)
-4. **Testing**: HTTP/network libraries require thorough integration testing
-5. **Monitor**: Run security audits before and after migration
+Use **modern-parser** instead—API-compatible drop-in replacement with CVE patches:
 
-### Migration Example
-```javascript
-// Old (deprecated-package)
-deprecated.method('https://api.example.com', (err, res, body) => {
-  if (err) return handleError(err);
-  processData(body);
-});
+```python
+# Before
+from legacy_parser import Parser
 
-// New (modern-replacement)
-try {
-  const response = await modernReplacement.get('https://api.example.com');
-  processData(response.data);
-} catch (err) {
-  handleError(err);
-}
+# After
+from modern_parser import Parser  # API-compatible
 ```
 
-### Lessons Learned
-- High download counts don't indicate current suitability
-- Official deprecation overrides all other positive signals
-- Security considerations are paramount—unmaintained = unacceptable
-- Plan for dependency lifecycle in long-lived projects
-- Ecosystem momentum matters—tools and standards evolve
+### Migration Path
+1. Replace with `modern-parser` (API-compatible)
+2. Test parsing behavior thoroughly
+3. Run `pip-audit` to verify no other vulnerable deps
+4. Monitor modern-parser security advisories
 
 ---
 
-## Comparative Summary
+## Example 3: fast-compute (Rust) - ADOPT with Nuance
 
-| Package | Type | Recommendation | Key Lesson |
-|---------|------|----------------|------------|
-| well-maintained-lib | Established, high-quality | ADOPT | Strong signals across all dimensions = low risk |
-| tiny-util | Micro-package | AVOID | Simple code doesn't justify supply chain risk |
-| modern-alternative | Quality newer option | ADOPT | Don't penalize quality for lower popularity |
-| deprecated-package | Deprecated popular | AVOID | Deprecation and security override everything |
+**User Request:** "I need a fast computation library for my Rust project. Is fast-compute good?"
+
+**Package Context:**
+- Name: fast-compute (crates.io)
+- Dependency Type: Standard (performance-critical)
+- Use Case: High-performance numerical computations
+
+### Summary
+Excellent single-maintainer library with outstanding code quality, documentation, and performance. Single maintainer is highly skilled and responsive. The bus factor of 1 is the only significant concern, but overall quality justifies adoption with proper risk mitigation.
+
+**Recommendation**: ADOPT (with monitoring)
+**Risk Level**: Medium
+**Blockers Found**: No
+
+### Evaluation Scores
+
+| Signal (Weight) | Score | Evidence |
+|-----------------|-------|----------|
+| Maintenance (H) | 4/5   | Last release v1.8.2 on 2025-01-05. Bi-monthly releases. Commits 2-3x/week. |
+| Security (H) | 5/5   | Zero CVEs. 95% `#![forbid(unsafe_code)]`. 5% unsafe well-documented. Passes cargo-audit. |
+| Community (M) | 3/5   | Single maintainer (asmith) but very responsive. 12 contributors for small PRs. Issues answered 24-48hr. |
+| Documentation (M) | 5/5   | Excellent docs.rs. Comprehensive examples. API reference with math explanations. |
+| Dependency Footprint (M) | 5/5   | 3 total deps (num-traits, rayon, serde). All tier-1 crates. |
+| Production Adoption (M) | 4/5   | 52k downloads. 60+ crate dependents. In awesome-rust list. 2 known production users. |
+| License (H) | 5/5   | MIT/Apache-2.0 dual (Rust standard). Clean dep licenses. |
+| API Stability (M) | 5/5   | v1.x stable 2 years. Strict semver. 1 breaking change (well-communicated). |
+| Funding (M) | 2/5   | No corporate backing. GitHub Sponsors: 3 sponsors, $50/mo. No sustainability plan. |
+| Ecosystem Momentum (M) | 4/5   | Growing adoption in Rust scientific computing. Active community discussion. |
+
+**Weighted Score**: 42/50
+
+### Key Findings
+
+**Strengths:**
+- Exceptional performance (3-5x faster than alternatives)
+- Outstanding docs.rs documentation with mathematical proofs
+- Minimal unsafe code (95% safe, 5% expertly justified)
+- Highly responsive maintainer (24-48hr triage)
+- Clean dependencies (tier-1 crates only)
+
+**Concerns:**
+- Bus factor = 1 (single maintainer, no succession plan)
+- Limited funding ($50/month)
+- Project depends entirely on one person's availability
+
+### Alternatives Considered
+- **compute-rs**: More contributors but slower performance, less complete docs
+- **sci-compute**: Corporate backing but heavier deps, less idiomatic Rust
+- **nalgebra**: More general-purpose, well-maintained, less specialized
+
+### Recommendation Details
+fast-compute demonstrates how one skilled maintainer can produce outstanding software. Code quality, documentation, and performance are all excellent. The maintainer (asmith) has shown 2+ years of consistent, responsive maintenance.
+
+**Single-maintainer risk is real but manageable.** This pattern is common in Rust—many excellent crates have one primary maintainer. The question is whether benefits outweigh risks.
+
+**Choose this when:**
+- Performance advantage (3-5x) is significant for your use case
+- Your team can fork/maintain if needed
+- Rust expertise available to maintain fork
+- Specialized functionality justifies risk
+
+**Choose alternative when:**
+- Organization requires multi-maintainer policy
+- Cannot maintain a fork
+- compute-rs or sci-compute meet performance needs
+
+### If You Proceed
+- **Sponsor the project**: $20-50/month helps sustainability
+- **Monitor actively**: Watch for maintenance velocity changes
+- **Build relationship**: Engage constructively in issues/PRs
+- **Fork strategy**: Ensure team can fork if needed
+- **Consider contributing**: Reduces bus factor, builds familiarity
+- **Vendor dependency**: `cargo vendor` for production
+- **Pin carefully**: `fast-compute = "1.8"` for patches only
+
+---
+
+## Example 4: mega-framework (npm) - EVALUATE FURTHER
+
+**User Request:** "Should I use mega-framework for my new web application?"
+
+**Package Context:**
+- Name: mega-framework (npm)
+- Dependency Type: Critical (application framework)
+- Use Case: Full-stack SaaS application
+
+### Summary
+Comprehensive, well-maintained framework with excellent community and corporate backing. However, 203-dependency footprint with some unmaintained transitive deps and 2.4MB bundle size create significant concerns. Decision depends heavily on specific project requirements and constraints.
+
+**Recommendation**: EVALUATE FURTHER
+**Risk Level**: Medium
+**Blockers Found**: No (but significant concerns)
+
+### Evaluation Scores
+
+| Signal (Weight) | Score | Evidence |
+|-----------------|-------|----------|
+| Maintenance (H) | 4/5   | Last release v5.2.0 on 2025-01-15. Monthly releases. 200+ contributors. |
+| Security (H) | 4/5   | SECURITY.md present. 3 CVEs in 2024, patched 7-14 days. Large attack surface concern. |
+| Community (M) | 5/5   | 200+ contributors, 15 core team. PRs merged quickly. Discord 5k+ members. health_percentage: 92. |
+| Documentation (M) | 5/5   | Excellent docs site. Comprehensive tutorials, API reference, guides. Active blog. |
+| Dependency Footprint (L) | 2/5   | **Heavy**: 203 total deps (15 direct, 188 transitive). 3 unmaintained 2+ years. Bundle: 2.4MB. |
+| Production Adoption (M) | 5/5   | 350k weekly downloads. Used by TechCorp, DataCo, CloudSystems. Case studies available. |
+| License (H) | 5/5   | MIT. 2 deps Apache-2.0, rest MIT/BSD. No conflicts. |
+| API Stability (M) | 3/5   | Major versions (v4→v5) required substantial refactoring. Deprecation warnings provided. |
+| Funding (H) | 5/5   | Backed by Mega Corp (public). 10 full-time engineers. OpenCollective: $45k/mo. |
+| Ecosystem Momentum (M) | 4/5   | Strong momentum, competitors emerging. Top-3 in category. 500+ plugins. |
+
+**Weighted Score**: 39/50
+
+### Key Findings
+
+**Strengths:**
+- Comprehensive batteries-included framework
+- Excellent docs and active community
+- Well-funded with dedicated team
+- Production-proven at major companies
+- Active development and security response
+
+**Concerns:**
+- **203 total dependencies** (extreme)
+- **3 unmaintained transitive deps**: old-event-emitter (2yr), legacy-promisify (3yr), util-deprecated (2yr)
+- **2.4MB bundle size** significant weight
+- **Complex migrations**: v4→v5 required substantial refactoring
+- **High lock-in**: Switching frameworks very costly
+
+### Unmaintained Transitive Dependencies
+1. **old-event-emitter** (2 years) - via router-lib
+2. **legacy-promisify** (3 years) - via async-helpers → data-layer
+3. **util-deprecated** (2 years) - via build-tools
+
+Mega Corp aware (issue #4521) but hasn't prioritized replacement.
+
+### Alternatives Considered
+- **slim-framework**: 45 total deps, modular, growing. Less mature.
+- **modern-stack**: Newer, 80 deps, lighter. Less production-proven.
+- **Build-your-own**: Use focused libraries (react-router, redux, vite). More work, more flexibility.
+
+### Recommendation Details
+mega-framework is **mixed**. Well-maintained and production-ready with strong backing. For teams valuing comprehensive solutions and accepting the weight, it's viable.
+
+**The 203-dependency footprint is concerning**, especially with unmaintained transitive deps. This is technical debt and potential security risk.
+
+### Decision Framework
+
+**Choose mega-framework if:**
+- You value comprehensive integration over modularity
+- Have security resources to monitor 200+ deps
+- Need full feature set (SSR, routing, state, build, testing)
+- Bundle size not critical (internal tools, admin dashboards)
+- Can handle complex major version migrations
+
+**Choose alternative if:**
+- Minimize dependencies/bundle size is priority
+- Prefer modular, focused libraries
+- Performance critical (public web, mobile)
+- Want component flexibility
+
+**Recommendation: Evaluate slim-framework first.** Similar DX with 1/5 the dependencies. If insufficient, mega-framework acceptable *with monitoring*.
+
+### If You Proceed
+- **Monitor deps**: `npm audit` in CI, Dependabot for 203 deps
+- **Security advisories**: Critical given attack surface
+- **Budget migrations**: Plan 2-4 weeks for major versions
+- **Track unmaintained deps**: Monitor old-event-emitter, legacy-promisify, util-deprecated
+- **Tree-shaking**: Use modular imports
+- **Measure bundle impact**: Profile before committing
+- **Use LTS versions**: v5 LTS for stability
+
+---
+
+## Key Takeaways from Examples
+
+### Pattern Recognition
+
+1. **Single maintainer ≠ automatic rejection** (fast-compute): Assess quality, responsiveness, track record
+2. **Abandonment + CVEs = AVOID** (legacy-parser): Security vulns without patches are dealbreakers
+3. **Corporate backing ≠ perfect** (mega-framework): Well-funded projects can have concerning dependencies
+4. **Multiple strong signals overcome weaknesses** (ExampleCo): Excellence across signals builds confidence
+
+### Evaluation Best Practices
+
+- **Weight appropriately**: Security and maintenance > documentation
+- **Context matters**: Heavy framework may be fine for internal tools, not public sites
+- **Provide alternatives**: Always suggest alternatives for AVOID or EVALUATE FURTHER
+- **Be specific**: Cite versions, dates, CVEs, metrics
+- **Acknowledge trade-offs**: Few packages are perfect
+
+### Recommendation Clarity
+
+- **ADOPT**: Clear benefits, low/acceptable risk, concerns don't outweigh strengths
+- **AVOID**: Dealbreaker issues (security, abandonment, licensing) + alternatives
+- **EVALUATE FURTHER**: Mixed signals, decision depends on user context/priorities
 
 ## How to Use These Examples
 
-1. **Template your evaluations**: Follow the structure (Summary, Scores, Findings, Alternatives, Recommendation)
-2. **Gather real data**: These are hypothetical—always run actual commands for real evaluations
-3. **Adapt weighting**: Adjust signal weights based on your dependency type (critical vs. dev dependencies)
-4. **Cite evidence**: Include specific versions, dates, metrics, and command outputs
-5. **Consider context**: What works for one project may not fit another's risk tolerance
-6. **Think critically**: Don't mechanically score—understand nuances and special circumstances
-7. **Update regularly**: Real evaluations age quickly; re-evaluate critical dependencies periodically
-
-## Structure Breakdown
-
-Each example demonstrates:
-- **Clear recommendation** with reasoning
-- **Evidence-based scoring** (not gut feelings)
-- **Balanced analysis** (strengths AND concerns)
-- **Actionable alternatives** when recommending AVOID
-- **Contextual guidance** for ADOPT recommendations
-- **Lessons learned** to build evaluation intuition
+1. **Template evaluations**: Follow structure (Summary, Scores, Findings, Alternatives, Recommendation)
+2. **Gather real data**: These are hypothetical—run actual commands for real evaluations
+3. **Adapt weighting**: Adjust signal weights for dependency type (critical vs dev)
+4. **Cite evidence**: Include specific versions, dates, metrics, command outputs
+5. **Consider context**: Risk tolerance varies by project
+6. **Think critically**: Don't mechanically score—understand nuances
